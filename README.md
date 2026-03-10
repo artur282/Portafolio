@@ -119,7 +119,7 @@ Foundations  & GenAI     & Automat.  & Cloud     Stack       Projects
 | ------ | --------------------------------------------------- | --------------------------- | ----------------------------------------------------- |
 | 18     | **[ProjectHub](./5-julio/semana-18-projecthub.md)** | React, FastAPI, PostgreSQL  | App de gestión de proyectos full-stack                |
 | 19     | **[LiveDash](./5-julio/semana-19-livedash.md)**     | WebSockets, React, Charts   | Dashboard en tiempo real con gráficos interactivos    |
-| 20     | **[SnapTask](./5-julio/semana-20-snaptask.md)**     | React Native, Expo, FastAPI | App móvil de gestión de tareas con sync en la nube 📱 |
+| 20     | **[SnapTask](./5-julio/semana-20-snaptask.md)**     | Flutter, Dart, FastAPI | App móvil de gestión de tareas con sync en la nube 📱 |
 | 21     | **[NotifyHub](./5-julio/semana-21-notifyhub.md)**   | FastAPI, Celery, React      | Sistema de notificaciones multi-canal                 |
 
 ---
@@ -144,10 +144,10 @@ Foundations  & GenAI     & Automat.  & Cloud     Stack       Projects
 Backend          IA/ML & GenAI       Datos & Automation    DevOps & Cloud      Frontend & Mobile
 ─────────        ──────────────      ──────────────────    ──────────────      ─────────────────
 Python 3.11+     LangChain           PostgreSQL            Docker              React
-FastAPI          MCP SDK             Pandas                GitHub Actions      React Native 📱
-Django/DRF       OpenAI API          SQLite                AWS Lambda          TypeScript
+FastAPI          MCP SDK             Pandas                GitHub Actions      Flutter 📱
+Django/DRF       OpenAI API          SQLite                AWS Lambda          Dart
 Rust 🦀          Prompt Eng.         n8n                   Linux/Bash          TailwindCSS
-Node.js/Express  Embeddings          Selenium              Git                 Expo
+Node.js/Express  Embeddings          Selenium              Git                 Flutter/Riverpod
                  Vector DBs (Pinecone,
                  Chroma, pgvector)
 ```

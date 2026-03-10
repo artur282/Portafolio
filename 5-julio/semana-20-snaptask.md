@@ -1,6 +1,6 @@
 # 📱 Semana 20 — SnapTask
 
-> **App móvil de gestión de tareas con React Native, Expo y sincronización en la nube**
+> **App móvil de gestión de tareas con Flutter y sincronización en la nube**
 
 | Campo              | Detalle                |
 | ------------------ | ---------------------- |
@@ -13,9 +13,9 @@
 
 ## 🎯 Descripción
 
-SnapTask es una aplicación móvil de gestión de tareas construida con **React Native** y **Expo**, diseñada para funcionar en Android e iOS desde una sola base de código. Incluye un backend con FastAPI para sincronización en la nube, notificaciones push y categorización inteligente de tareas.
+SnapTask es una aplicación móvil de gestión de tareas construida con **Flutter**, diseñada para funcionar en Android e iOS desde una sola base de código. Incluye un backend con FastAPI para sincronización en la nube, notificaciones push y categorización inteligente de tareas.
 
-Este proyecto demuestra la capacidad de extender habilidades full-stack al desarrollo móvil, manteniendo código limpio y reutilizable con TypeScript y el ecosistema de React Native.
+Este proyecto demuestra la capacidad de extender habilidades full-stack al desarrollo móvil, manteniendo código limpio y reutilizable con Dart y el ecosistema de Flutter.
 
 ---
 
@@ -31,11 +31,11 @@ Este proyecto demuestra la capacidad de extender habilidades full-stack al desar
 
 ### Interfaz móvil nativa
 
-- [ ] Navegación fluida con React Navigation (tabs + stack)
+- [ ] Navegación fluida con GoRouter
 - [ ] Pantalla principal con lista de tareas agrupadas por fecha
 - [ ] Pantalla de detalle de tarea con edición inline
 - [ ] Dark mode / Light mode con toggle automático
-- [ ] Animaciones suaves con Reanimated
+- [ ] Animaciones suaves y transiciones Hero
 - [ ] Pull-to-refresh para sincronización
 
 ### Sincronización en la nube
@@ -43,13 +43,13 @@ Este proyecto demuestra la capacidad de extender habilidades full-stack al desar
 - [ ] Backend FastAPI con endpoints REST
 - [ ] Autenticación con JWT (login/registro)
 - [ ] Sincronización bidireccional de tareas
-- [ ] Almacenamiento local con AsyncStorage (funciona offline)
+- [ ] Almacenamiento local con Hive/SharedPreferences (funciona offline)
 - [ ] Resolución de conflictos (última escritura gana)
 
 ### Notificaciones
 
-- [ ] Notificaciones push con Expo Notifications
-- [ ] Recordatorios programados para tareas con fecha límite
+- [ ] Notificaciones push con Firebase Cloud Messaging (FCM)
+- [ ] Recordatorios programados para tareas con fecha límite usando flutter_local_notifications
 - [ ] Badge de la app con conteo de tareas pendientes
 
 ---
@@ -58,13 +58,12 @@ Este proyecto demuestra la capacidad de extender habilidades full-stack al desar
 
 | Tecnología               | Propósito                                  |
 | ------------------------ | ------------------------------------------ |
-| **React Native**         | Framework de desarrollo móvil              |
-| **Expo**                 | Plataforma de desarrollo y distribución    |
-| **TypeScript**           | Tipado estático y código más seguro        |
-| **React Navigation**     | Navegación entre pantallas (tabs + stack)  |
-| **Reanimated**           | Animaciones de alto rendimiento            |
-| **AsyncStorage**         | Almacenamiento local persistente           |
-| **Expo Notifications**   | Notificaciones push y locales              |
+| **Flutter**              | Framework de desarrollo móvil              |
+| **Dart**                 | Lenguaje de programación unificado         |
+| **GoRouter**             | Navegación entre pantallas                 |
+| **Provider / Riverpod**  | Gestión del estado                         |
+| **Hive / SharedPreferences**| Almacenamiento local persistente        |
+| **FCM / Local Notifications**| Notificaciones push y locales          |
 | **FastAPI**              | Backend API REST                           |
 | **PostgreSQL**           | Base de datos del backend                  |
 | **JWT (python-jose)**    | Autenticación basada en tokens             |
@@ -73,40 +72,42 @@ Este proyecto demuestra la capacidad de extender habilidades full-stack al desar
 
 ## 📁 Estructura del proyecto
 
-```
+```text
 snaptask/
-├── mobile/                        # App React Native + Expo
-│   ├── app/                       # Pantallas (Expo Router)
-│   │   ├── (tabs)/
-│   │   │   ├── index.tsx          # Pantalla principal (lista tareas)
-│   │   │   ├── categories.tsx     # Gestión de categorías
-│   │   │   └── settings.tsx       # Configuración y perfil
-│   │   ├── task/
-│   │   │   └── [id].tsx           # Detalle de tarea
-│   │   ├── auth/
-│   │   │   ├── login.tsx          # Inicio de sesión
-│   │   │   └── register.tsx       # Registro
-│   │   └── _layout.tsx            # Layout raíz
-│   ├── components/
-│   │   ├── TaskCard.tsx           # Tarjeta de tarea con gestos
-│   │   ├── TaskForm.tsx           # Formulario de tarea
-│   │   ├── CategoryBadge.tsx      # Badge de categoría
-│   │   └── EmptyState.tsx         # Estado vacío ilustrado
-│   ├── hooks/
-│   │   ├── useTasks.ts            # Hook de gestión de tareas
-│   │   ├── useAuth.ts             # Hook de autenticación
-│   │   └── useSync.ts             # Hook de sincronización
-│   ├── services/
-│   │   ├── api.ts                 # Cliente HTTP (axios)
-│   │   ├── storage.ts             # AsyncStorage helpers
-│   │   └── notifications.ts      # Expo Notifications setup
-│   ├── theme/
-│   │   └── colors.ts              # Paleta de colores (dark/light)
-│   ├── types/
-│   │   └── index.ts               # Tipos TypeScript
-│   ├── app.json                   # Configuración Expo
-│   ├── package.json
-│   └── tsconfig.json
+├── mobile/                        # App Flutter
+│   ├── lib/                       # Código fuente Dart
+│   │   ├── screens/               # Pantallas principales
+│   │   │   ├── home/
+│   │   │   │   └── home_screen.dart   # Pantalla principal (lista tareas)
+│   │   │   ├── categories/
+│   │   │   │   └── categories_screen.dart # Gestión de categorías
+│   │   │   ├── settings/
+│   │   │   │   └── settings_screen.dart   # Configuración y perfil
+│   │   │   ├── task/
+│   │   │   │   └── task_detail_screen.dart# Detalle de tarea
+│   │   │   └── auth/
+│   │   │       ├── login_screen.dart      # Inicio de sesión
+│   │   │       └── register_screen.dart   # Registro
+│   │   ├── widgets/
+│   │   │   ├── task_card.dart         # Tarjeta de tarea con gestos
+│   │   │   ├── task_form.dart         # Formulario de tarea
+│   │   │   ├── category_badge.dart    # Badge de categoría
+│   │   │   └── empty_state.dart       # Estado vacío ilustrado
+│   │   ├── providers/
+│   │   │   ├── task_provider.dart     # Gestión de tareas
+│   │   │   ├── auth_provider.dart     # Manejo de sesión
+│   │   │   └── sync_provider.dart     # Lógica de sincronización
+│   │   ├── services/
+│   │   │   ├── api_service.dart       # Cliente HTTP (dio/http)
+│   │   │   ├── storage_service.dart   # Almacenamiento local (Hive)
+│   │   │   └── notification_service.dart# Config FCM/Locales
+│   │   ├── theme/
+│   │   │   └── app_theme.dart         # Paleta de colores (dark/light)
+│   │   ├── models/
+│   │   │   └── task_model.dart        # Modelos (clases de datos)
+│   │   └── main.dart                  # Punto de entrada de la app
+│   ├── pubspec.yaml                   # Dependencias de Flutter
+│   └── README.md
 ├── backend/                       # API FastAPI
 │   ├── app/
 │   │   ├── main.py                # Entry point FastAPI
@@ -131,52 +132,52 @@ snaptask/
 
 | Hora           | Actividad                                              |
 | -------------- | ------------------------------------------------------ |
-| 🌅 9:00-10:00  | Setup: Expo, React Navigation, estructura del proyecto |
-| 🌅 10:00-12:00 | Pantalla principal: lista de tareas + TaskCard          |
-| 🌞 12:00-13:00 | Backend FastAPI: modelos, auth JWT, CRUD tareas         |
-| 🌞 14:00-16:00 | Pantalla de detalle + formulario de tarea               |
-| 🌆 16:00-18:00 | Categorías, prioridades y gestos de deslizamiento       |
+| 🌅 9:00-10:00  | Setup: Flutter, GoRouter, estructura del proyecto      |
+| 🌅 10:00-12:00 | Pantalla principal: lista de tareas + TaskCard         |
+| 🌞 12:00-13:00 | Backend FastAPI: modelos, auth JWT, CRUD tareas        |
+| 🌞 14:00-16:00 | Pantalla de detalle + formulario de tarea              |
+| 🌆 16:00-18:00 | Categorías, prioridades y gestos (Dismissible)         |
 
 ### Domingo
 
 | Hora           | Actividad                                           |
 | -------------- | --------------------------------------------------- |
-| 🌅 9:00-10:30  | Sincronización: hooks useSync, AsyncStorage offline  |
-| 🌅 10:30-12:00 | Dark mode + animaciones con Reanimated               |
-| 🌞 13:00-14:30 | Notificaciones push + recordatorios programados      |
-| 🌞 14:30-16:00 | Tests (Jest + React Native Testing Library)          |
-| 🌆 16:00-17:00 | README con capturas de pantalla y video demo          |
+| 🌅 9:00-10:30  | Sincronización: providers de sync, almacenamiento Hive |
+| 🌅 10:30-12:00 | Dark mode + animaciones Hero y explícitas           |
+| 🌞 13:00-14:30 | Notificaciones push + recordatorios programados     |
+| 🌞 14:30-16:00 | Tests (flutter_test para widgets y lógica)          |
+| 🌆 16:00-17:00 | README con capturas de pantalla y video demo        |
 
 ---
 
 ## ✅ Definición de "hecho"
 
 - [ ] CRUD completo de tareas funcionando en la app móvil
-- [ ] Navegación fluida entre pantallas (tabs + stack)
+- [ ] Navegación fluida entre pantallas (GoRouter)
 - [ ] Sincronización con backend FastAPI
-- [ ] Modo offline con AsyncStorage
-- [ ] Dark mode y Light mode
-- [ ] Al menos una animación con Reanimated
+- [ ] Modo offline con Hive / SharedPreferences
+- [ ] Dark mode y Light mode dinámico
+- [ ] Transiciones cuidadas (animaciones en Flutter)
 - [ ] Notificaciones locales para recordatorios
-- [ ] Tests unitarios de componentes clave
+- [ ] Tests de widgets clave y lógica de negocio
 - [ ] README con capturas de pantalla en ambos temas
 - [ ] Docker Compose para el backend
 
 ---
 
-## 🧠 Conceptos de React Native demostrados
+## 🧠 Conceptos de Flutter demostrados
 
 | Concepto                     | Aplicación en el proyecto                     |
 | ---------------------------- | --------------------------------------------- |
-| Componentes funcionales      | Todas las pantallas y componentes con hooks    |
-| Custom hooks                 | useTasks, useAuth, useSync                     |
-| React Navigation             | Tab navigator + Stack navigator               |
-| Gestos nativos               | Swipeable para acciones rápidas                |
-| Animaciones (Reanimated)     | Transiciones y micro-interacciones             |
-| Almacenamiento local         | AsyncStorage para persistencia offline         |
-| Temas dinámicos              | Dark/Light mode con contexto de React          |
-| TypeScript                   | Tipos estrictos en toda la app                 |
-| Expo ecosystem               | Notifications, Router, config plugins          |
+| Widgets Funcionales          | Árbol de widgets modular en toda la app       |
+| Gestión de estado            | Patrón Provider o Riverpod para el negocio    |
+| Enrutamiento                 | Navegación declarativa con GoRouter           |
+| Gestos interactivos          | Widget Dismissible para borrado/completado    |
+| Animaciones de UI            | Composiciones de Hero, AnimatedContainer, etc.|
+| Almacenamiento local         | SQLite / Hive para base de datos local        |
+| Tipado estricto              | Dart puro y null-safety                       |
+| Multihilo (Asincronía)       | Futures y Streams en la comunicación con APIs |
+| Plugins nativos              | Manejo de hardware a nivel de notificaciones  |
 
 ---
 
@@ -184,10 +185,9 @@ snaptask/
 
 | Habilidad                  | Evidencia                                           |
 | -------------------------- | --------------------------------------------------- |
-| Desarrollo móvil           | App nativa funcional en Android/iOS                  |
-| React Native + Expo        | Ecosystem completo, navegación, notificaciones       |
-| Full-stack mobile           | App móvil + Backend FastAPI + PostgreSQL              |
-| TypeScript                 | Tipado estricto en frontend y backend                |
-| UX/UI móvil                | Gestos, animaciones, dark mode, experiencia pulida   |
-| Offline-first              | Funciona sin conexión con sincronización posterior    |
-| Arquitectura limpia        | Separación de concerns con hooks y services          |
+| Desarrollo móvil           | App compilada funcional en Android/iOS (Flutter)    |
+| Entendimiento UI/UX        | Experiencia responsiva y fluida nativa              |
+| Full-stack mobile          | App móvil + Backend FastAPI + PostgreSQL            |
+| Tipado estricto            | Uso idiomático de Dart y Python (Type hints)        |
+| Arquitectura escalable     | Separación limpia: UI, Provider, Services, Models   |
+| Modo Offline-first         | Funciona sin red y sincroniza cuando es posible     |
