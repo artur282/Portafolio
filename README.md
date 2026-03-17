@@ -65,7 +65,7 @@ Foundations  & GenAI     & Automat.  & Cloud     Stack       Projects
 | Semana | Proyecto                                                                                               | Tecnologías clave            | Descripción                                                   |
 | ------ | ------------------------------------------------------------------------------------------------------ | ---------------------------- | ------------------------------------------------------------- |
 | 01     | **[TaskFlow API](./1-marzo/semana-01-taskflow-api.md)**                                                | FastAPI, PostgreSQL, Docker  | API REST completa con CRUD, filtros, paginación y tests ✅    |
-| 02     | **[AuthGuard](./1-marzo/semana-02-authguard.md)**                                                      | Django, DRF, JWT             | Sistema de autenticación con roles, permisos y refresh tokens ✅ |
+| 02     | **[AuthGuard](./1-marzo/semana-02-authguard.md)**                                                      | FastAPI, PostgreSQL, JWT     | Sistema de autenticación con roles, permisos y refresh tokens ✅ |
 | 03     | **[DataHarvest](./1-marzo/semana-03-dataharvest.md)**                                                  | Selenium, Pandas, PostgreSQL | Web scraper inteligente con extracción y análisis de datos    |
 | 04     | **[RustCLI (DashTUI)](./1-marzo/semana-04-rustcli.md)**                                                | Rust, Clap, Ratatui          | TUI interactivo y CLI todo-en-uno de alto rendimiento 🦀✅    |
 
@@ -145,7 +145,7 @@ Backend          IA/ML & GenAI       Datos & Automation    DevOps & Cloud      F
 ─────────        ──────────────      ──────────────────    ──────────────      ─────────────────
 Python 3.11+     LangChain           PostgreSQL            Docker              React
 FastAPI          MCP SDK             Pandas                GitHub Actions      Flutter 📱
-Django/DRF       OpenAI API          SQLite                AWS Lambda          Dart
+Pydantic         OpenAI API          SQLite                AWS Lambda          Dart
 Rust 🦀          Prompt Eng.         n8n                   Linux/Bash          TailwindCSS
 Node.js/Express  Embeddings          Selenium              Git                 Flutter/Riverpod
                  Vector DBs (Pinecone,

@@ -1,6 +1,6 @@
 # 🔐 Semana 02 — AuthGuard
 
-> **Sistema de autenticación y autorización completo con Django, DRF y JWT**
+> **Sistema de autenticación y autorización completo con FastAPI, PostgreSQL y JWT**
 
 | Campo              | Detalle             |
 | ------------------ | ------------------- |
@@ -14,7 +14,7 @@
 
 ## 🎯 Descripción
 
-AuthGuard es un sistema de autenticación y autorización listo para producción construido con Django y Django REST Framework. Va más allá del login básico: implementa JWT con refresh tokens, roles y permisos granulares, registro con verificación de email, y endpoints seguros.
+AuthGuard es un sistema de autenticación y autorización listo para producción construido con FastAPI y SQLAlchemy. Va más allá del login básico: implementa JWT con refresh tokens, roles y permisos granulares, registro con verificación de email, y endpoints seguros.
 
 Este proyecto se puede reutilizar como módulo de autenticación en cualquier proyecto futuro del portafolio.
 
@@ -28,9 +28,9 @@ Este proyecto se puede reutilizar como módulo de autenticación en cualquier pr
 └──────────────────┬──────────────────────┘
                    │
           ┌────────▼────────┐
-          │   Django + DRF  │
-          │   (Views +      │
-          │   Permissions)   │
+          │    FastAPI       │
+          │   (Routers +    │
+          │   Dependencies)  │
           └────────┬────────┘
                    │
      ┌─────────────┼─────────────┐
@@ -66,7 +66,7 @@ Este proyecto se puede reutilizar como módulo de autenticación en cualquier pr
 
 - [x] Roles predefinidos (admin, editor, viewer)
 - [x] Permisos granulares por recurso
-- [x] Decoradores de permisos personalizados
+- [x] Dependencies de permisos personalizadas
 - [x] Middleware de autenticación
 
 ### Gestión de usuarios
@@ -83,22 +83,23 @@ Este proyecto se puede reutilizar como módulo de autenticación en cualquier pr
 - [x] Password hashing (bcrypt/argon2)
 - [x] Validación de fortaleza de contraseña
 - [x] Protección contra brute force
-- [x] Headers de seguridad (CORS, CSRF)
+- [x] Headers de seguridad (CORS)
 
 ---
 
 ## 🛠️ Stack técnico
 
-| Tecnología                | Propósito             |
-| ------------------------- | --------------------- |
-| **Django 5.x**            | Framework web         |
-| **Django REST Framework** | API REST              |
-| **SimpleJWT**             | Tokens JWT            |
-| **PostgreSQL 16**         | Base de datos         |
-| **Docker Compose**        | Infraestructura local |
-| **pytest-django**         | Testing               |
-| **Ruff**                  | Linting               |
-| **drf-spectacular**       | Documentación OpenAPI |
+| Tecnología             | Propósito             |
+| ---------------------- | --------------------- |
+| **FastAPI**            | Framework web         |
+| **SQLAlchemy + Alembic** | ORM y migraciones   |
+| **python-jose**        | Tokens JWT            |
+| **Pydantic**           | Validación de datos   |
+| **PostgreSQL 16**      | Base de datos         |
+| **Docker Compose**     | Infraestructura local |
+| **pytest + httpx**     | Testing               |
+| **Ruff**               | Linting               |
+| **Swagger/ReDoc**      | Documentación OpenAPI |
 
 ---
 
@@ -129,23 +130,23 @@ POST   /api/v1/users/{id}/roles       # Asignar rol (admin)
 
 ### Sábado
 
-| Hora           | Actividad                                     |
-| -------------- | --------------------------------------------- |
-| 🌅 9:00-10:00  | Setup: Django project, Docker Compose, config |
-| 🌅 10:00-11:30 | Modelo de usuario custom + migraciones        |
-| 🌞 11:30-13:00 | Registro y login con JWT (SimpleJWT)          |
-| 🌞 14:00-16:00 | Refresh tokens, logout, cambio de password    |
-| 🌆 16:00-18:00 | Sistema de roles y permisos (RBAC)            |
+| Hora           | Actividad                                            |
+| -------------- | ---------------------------------------------------- |
+| 🌅 9:00-10:00  | Setup: FastAPI project, Docker Compose, config       |
+| 🌅 10:00-11:30 | Modelo de usuario con SQLAlchemy + migraciones Alembic |
+| 🌞 11:30-13:00 | Registro y login con JWT (python-jose)               |
+| 🌞 14:00-16:00 | Refresh tokens, logout, cambio de password           |
+| 🌆 16:00-18:00 | Sistema de roles y permisos (RBAC con Dependencies)  |
 
 ### Domingo
 
-| Hora           | Actividad                           |
-| -------------- | ----------------------------------- |
-| 🌅 9:00-11:00  | CRUD de usuarios + perfil           |
-| 🌅 11:00-12:30 | Tests de autenticación y permisos   |
-| 🌞 13:30-15:00 | Rate limiting + seguridad           |
-| 🌞 15:00-16:30 | Documentación API (drf-spectacular) |
-| 🌆 16:30-17:30 | README y push a GitHub              |
+| Hora           | Actividad                            |
+| -------------- | ------------------------------------ |
+| 🌅 9:00-11:00  | CRUD de usuarios + perfil            |
+| 🌅 11:00-12:30 | Tests de autenticación y permisos    |
+| 🌞 13:30-15:00 | Rate limiting + seguridad            |
+| 🌞 15:00-16:30 | Documentación API (Swagger/ReDoc)    |
+| 🌆 16:30-17:30 | README y push a GitHub               |
 
 ---
 
@@ -163,10 +164,10 @@ POST   /api/v1/users/{id}/roles       # Asignar rol (admin)
 
 ## 💼 Lo que demuestra al reclutador
 
-| Habilidad  | Evidencia                                     |
-| ---------- | --------------------------------------------- |
-| Seguridad  | JWT, RBAC, rate limiting, password hashing    |
-| Django     | Modelo custom de usuario, middleware, signals |
-| API Design | Endpoints RESTful, errores consistentes       |
-| Patrones   | Separación de responsabilidades, SOLID        |
-| Testing    | Flujos de auth complejos testeados            |
+| Habilidad  | Evidencia                                                |
+| ---------- | -------------------------------------------------------- |
+| Seguridad  | JWT, RBAC, rate limiting, password hashing               |
+| FastAPI    | Routers, Dependencies, middleware, Pydantic schemas      |
+| API Design | Endpoints RESTful, errores consistentes                  |
+| Patrones   | Separación de responsabilidades, SOLID                   |
+| Testing    | Flujos de auth complejos testeados con pytest + httpx    |
