@@ -1,13 +1,15 @@
+
 # 🕷️ Semana 03 — DataHarvest
 
 > **Web scraper inteligente con Selenium, Pandas y análisis automatizado de datos**
 
 | Campo              | Detalle             |
 | ------------------ | ------------------- |
-| 📅 Fechas          | 21-22 de marzo 2026 |
-| 🏷️ Categoría       | Backend Foundations |
-| ⏱️ Tiempo estimado | 10-12 horas         |
-| 📊 Dificultad      | ⭐⭐⭐ Intermedio   |
+| 📅 Fechas          | 21-22 de marzo 2026                               |
+| 🏷️ Categoría       | Backend Foundations                               |
+| ⏱️ Tiempo estimado | 10-12 horas                                       |
+| 📊 Dificultad      | ⭐⭐⭐ Intermedio                                 |
+| 🔗 Repositorio     | [GitHub](https://github.com/artur282/DataHarvest) |
 
 ---
 
@@ -21,30 +23,23 @@ Este proyecto sienta las bases para los proyectos de datos del mes de mayo.
 
 ## 🏗️ Arquitectura
 
-```
-┌──────────────────────────────────┐
-│          Scheduler/CLI            │
-└───────────────┬──────────────────┘
-                │
-       ┌────────▼────────┐
-       │  Scraper Engine  │
-       │  (Selenium +     │
-       │   requests)      │
-       └────────┬────────┘
-                │
-   ┌────────────┼────────────┐
-   │            │            │
-┌──▼───┐  ┌────▼────┐  ┌───▼────┐
-│Parser│  │Validator│  │Cleaner │
-│(BS4) │  │(Schema) │  │(Pandas)│
-└──┬───┘  └────┬────┘  └───┬────┘
-   │            │            │
-   └────────────┼────────────┘
-                │
-   ┌────────────▼────────────┐
-   │      Data Store          │
-   │  (PostgreSQL + CSV/JSON) │
-   └──────────────────────────┘
+```mermaid
+graph TD
+    subgraph Frontend
+        A[Scheduler/TUI Textual]
+    end
+    
+    A --> B[Scraper Engine Selenium + requests]
+    
+    subgraph "Processing Layer"
+        B --> C[Parser BS4]
+        B --> D[Validator Schema]
+        B --> E[Cleaner Pandas]
+    end
+    
+    C --> F[Data Store PostgreSQL + CSV/JSON]
+    D --> F
+    E --> F
 ```
 
 ---
@@ -53,34 +48,48 @@ Este proyecto sienta las bases para los proyectos de datos del mes de mayo.
 
 ### Scraping
 
-- [ ] Motor de scraping con Selenium (páginas dinámicas)
-- [ ] Fallback a requests + BeautifulSoup (páginas estáticas)
-- [ ] Rotación de user-agents
-- [ ] Manejo de rate limiting y delays éticos
-- [ ] Retry con backoff exponencial
-- [ ] Respeto de robots.txt
+- [x] Motor de scraping con Selenium (páginas dinámicas)
+- [x] Fallback a requests + BeautifulSoup (páginas estáticas)
+- [x] Rotación de user-agents
+- [x] Manejo de rate limiting y delays éticos
+- [x] Retry con backoff exponencial
+- [x] Respeto de robots.txt
+
+Extra implementado:
+
+- [x] Scraper real de Python Jobs con metadata (`posted_at`, `tags`)
+- [x] Scraper real de Hacker News con metadata (`points`, `author`, `comments_count`, `item_url`)
 
 ### Procesamiento de datos
 
-- [ ] Limpieza y normalización con Pandas
-- [ ] Validación de schema de datos
-- [ ] Deduplicación inteligente
-- [ ] Transformaciones personalizables
-- [ ] Detección de anomalías básicas
+- [x] Limpieza y normalización con Pandas
+- [x] Validación de schema de datos
+- [x] Deduplicación inteligente
+- [x] Transformaciones personalizables
+- [x] Detección de anomalías básicas
 
 ### Almacenamiento y exportación
 
-- [ ] Persistencia en PostgreSQL
-- [ ] Exportación a CSV, JSON, Excel
-- [ ] Historial de ejecuciones
-- [ ] Logs detallados de cada run
+- [x] Persistencia en PostgreSQL
+- [x] Exportación a CSV, JSON, Excel
+- [x] Historial de ejecuciones
+- [x] Logs detallados de cada run
 
-### CLI
+Extra implementado:
 
-- [ ] Interfaz CLI para ejecutar scrapers
-- [ ] Configuración por YAML/TOML
-- [ ] Modo dry-run para testing
-- [ ] Reporte de resultados en consola
+- [x] Registro de runs con `status=success/error` y `error_message`
+- [x] Registro de duración por ejecución (`duration_seconds`)
+- [x] Filtros de historial por scraper/status
+- [x] Paginación de historial (next/prev)
+- [x] Exportación CSV de historial filtrado con columnas derivadas (`duration_seconds`, `has_error`)
+
+### TUI y configuración
+
+- [x] Interfaz TUI con Textual para ejecutar scrapers
+- [x] Configuración por YAML/TOML
+- [x] Modo dry-run para testing
+- [x] Reporte de resultados en pantalla
+- [x] Run-all desde la interfaz
 
 ---
 
@@ -93,7 +102,7 @@ Este proyecto sienta las bases para los proyectos de datos del mes de mayo.
 | **Pandas**         | Procesamiento y limpieza de datos |
 | **PostgreSQL**     | Almacenamiento persistente        |
 | **SQLAlchemy**     | ORM                               |
-| **Typer**          | Interfaz CLI                      |
+| **Textual**        | Interfaz TUI                      |
 | **Docker Compose** | Infraestructura                   |
 | **pytest**         | Testing                           |
 
@@ -101,11 +110,12 @@ Este proyecto sienta las bases para los proyectos de datos del mes de mayo.
 
 ## 📁 Estructura del proyecto
 
-```
+```text
 dataharvest/
 ├── app/
 │   ├── __init__.py
-│   ├── cli.py                 # Entry point CLI
+│   ├── tui.py                 # Entry point TUI
+│   ├── pipeline.py            # Run single / run all
 │   ├── config.py              # Configuración
 │   ├── scrapers/
 │   │   ├── base.py            # Clase base de scraper
@@ -151,7 +161,7 @@ dataharvest/
 
 | Hora           | Actividad                                   |
 | -------------- | ------------------------------------------- |
-| 🌅 9:00-10:30  | CLI con Typer + configuración YAML          |
+| 🌅 9:00-10:30  | TUI con Textual + configuración YAML        |
 | 🌅 10:30-12:00 | Segundo scraper (noticias tech)             |
 | 🌞 13:00-14:30 | Tests con fixtures HTML                     |
 | 🌞 14:30-16:00 | User-agent rotation, retries, rate limiting |
@@ -161,13 +171,13 @@ dataharvest/
 
 ## ✅ Definición de "hecho"
 
-- [ ] Al menos 2 scrapers funcionales
-- [ ] Pipeline: scraping → limpieza → validación → almacenamiento
-- [ ] Exportación a CSV y JSON
-- [ ] CLI funcional con comandos claros
-- [ ] Tests con HTML fixtures (sin depender de internet)
-- [ ] Manejo de errores y retries
-- [ ] README con instrucciones y ejemplos
+- [x] Al menos 2 scrapers funcionales
+- [x] Pipeline: scraping → limpieza → validación → almacenamiento
+- [x] Exportación a CSV y JSON
+- [x] TUI funcional con acciones claras (run, run-all, filtros, export)
+- [x] Tests con HTML fixtures (sin depender de internet)
+- [x] Manejo de errores y retries
+- [x] README con instrucciones y ejemplos
 
 ---
 
