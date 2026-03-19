@@ -250,7 +250,3 @@ Domingo tarde     → Polish, deploy, README y diagramas finales (2-3h)
 Cada proyecto individual tiene su propia licencia. El plan general y la documentación están bajo [MIT License](./LICENSE).
 
 ---
-
-<p align="center">
-  <i>"El mejor momento para empezar fue ayer. El segundo mejor momento es este fin de semana."</i>
-</p>
