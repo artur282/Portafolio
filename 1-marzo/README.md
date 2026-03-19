@@ -4,54 +4,78 @@
 
 ## 🎯 Objetivo del mes
 
-Establecer las bases sólidas de ingeniería backend construyendo APIs profesionales, sistemas de autenticación robustos, herramientas de scraping inteligente y utilidades CLI. Cada proyecto demuestra buenas prácticas de desarrollo: código limpio, tests, documentación y Docker.
+Establecer las bases sólidas de ingeniería backend construyendo APIs profesionales, sistemas de autenticación robustos, herramientas de scraping y utilidades CLI en Rust. En paralelo, iniciar el track de AI con un sistema de gestión de prompts versionado.
 
 ---
 
 ## 📅 Proyectos del mes
 
-| Semana | Fechas    | Proyecto                                    | Estado       |
-| ------ | --------- | ------------------------------------------- | ------------ |
-| 01     | 7-8 Mar   | [TaskFlow API](./semana-01-taskflow-api.md) | ⬜ Pendiente |
-| 02     | 14-15 Mar | [AuthGuard](./semana-02-authguard.md)       | ⬜ Pendiente |
-| 03     | 21-22 Mar | [DataHarvest](./semana-03-dataharvest.md)   | ⬜ Pendiente |
-| 04     | 28-29 Mar | [DevCLI](./semana-04-devcli.md)             | ⬜ Pendiente |
+### 🏗️ Backend Track (fines de semana)
+
+| Semana | Fechas    | Proyecto                                              | Estado       |
+| ------ | --------- | ----------------------------------------------------- | ------------ |
+| 01     | 7-8 Mar   | [TaskFlow API](./semana-01-taskflow-api.md)           | ✅ Completo  |
+| 02     | 14-15 Mar | [AuthGuard](./semana-02-authguard.md)                 | ✅ Completo  |
+| 03     | 21-22 Mar | [DataHarvest](./semana-03-dataharvest.md)             | ✅ Completo  |
+| 04     | 28-29 Mar | [RustCLI (DashTUI)](./semana-04-rustcli.md)           | ✅ Completo  |
+
+### 🤖 AI Track (entre semana ~40h)
+
+| Proyecto                                | Tecnologías clave              | Descripción                                                   |
+| --------------------------------------- | ------------------------------ | ------------------------------------------------------------- |
+| [PromptLab](./mes-01-promptlab.md)      | OpenAI, Anthropic, Langfuse    | Sistema de versionado de prompts con evaluación comparativa   |
 
 ---
 
 ## 🧠 Habilidades que se desarrollan
 
-- Diseño de APIs RESTful con FastAPI y Django
+**Backend:**
+- Diseño de APIs RESTful con FastAPI (Layered Architecture, TDD)
 - Autenticación y autorización (JWT, roles, permisos)
 - Web scraping responsable y procesamiento de datos
-- Desarrollo de herramientas CLI profesionales
+- Desarrollo CLI/TUI con Rust 🦀
 - Containerización con Docker
-- Testing con pytest
-- Documentación de APIs (OpenAPI/Swagger)
+- Testing con pytest y Testcontainers
+
+**AI:**
+- Ingeniería de prompts sistemática y versionada
+- Evaluación comparativa de LLMs (GPT-4o vs Claude vs Llama)
+- Métricas de calidad NLP (ROUGE, BERTScore, LLM-as-judge)
+- Observabilidad con Langfuse
 
 ---
 
 ## 🔗 Cómo se conectan los proyectos
 
 ```
-Semana 01: TaskFlow API
-    │  Aprende: FastAPI, PostgreSQL, Docker, CRUD, tests
-    ▼
-Semana 02: AuthGuard
-    │  Aprende: Django, DRF, JWT, roles → reutilizable en futuros proyectos
-    ▼
-Semana 03: DataHarvest
-    │  Aprende: Selenium, Pandas, scraping → base para proyectos de datos
-    ▼
-Semana 04: DevCLI
-       Aprende: Typer, Rich, empaquetado → herramientas propias
+Backend Track:
+  Semana 01: TaskFlow API
+      │  FastAPI, PostgreSQL, Docker, CRUD, TDD
+      ▼
+  Semana 02: AuthGuard
+      │  JWT, roles, permisos → reutilizable en futuros proyectos
+      ▼
+  Semana 03: DataHarvest
+      │  Selenium, Pandas, scraping → base para proyectos de datos
+      ▼
+  Semana 04: RustCLI (DashTUI)
+         Rust, Clap, Ratatui → herramientas CLI de alto rendimiento
+
+AI Track:
+  PromptLab
+      Sistema de catálogo y versionado de prompts con evaluación
+      comparativa entre múltiples modelos LLM
 ```
 
 ---
 
 ## 📊 Progreso
 
-- [ ] Semana 01 — TaskFlow API
-- [ ] Semana 02 — AuthGuard
-- [ ] Semana 03 — DataHarvest
-- [ ] Semana 04 — DevCLI
+**Backend:**
+- [x] Semana 01 — TaskFlow API
+- [x] Semana 02 — AuthGuard
+- [x] Semana 03 — DataHarvest
+- [x] Semana 04 — RustCLI (DashTUI)
+
+**AI:**
+- [ ] PromptLab

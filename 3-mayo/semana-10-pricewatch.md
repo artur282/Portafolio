@@ -1,66 +1,137 @@
-# 👁️ Semana 10 — PriceWatch
+# 🏢 Semana 10 — TenantAPI
 
-> **Sistema de monitoreo de precios con web scraping, alertas y análisis de tendencias**
+> **API Multi-tenant SaaS con Row-Level Security, aislamiento de datos y FastAPI**
 
 | Campo              | Detalle                       |
 | ------------------ | ----------------------------- |
 | 📅 Fechas          | 9-10 de mayo 2026             |
 | 🏷️ Categoría       | Data Engineering & Automation |
 | ⏱️ Tiempo estimado | 10-12 horas                   |
-| 📊 Dificultad      | ⭐⭐⭐ Intermedio             |
+| 📊 Dificultad      | ⭐⭐⭐⭐ Intermedio-alto      |
 
 ---
 
 ## 🎯 Descripción
 
-PriceWatch es un sistema que monitorea precios de productos en sitios web de e-commerce, almacena el historial de precios, detecta cambios significativos y envía alertas. Combina lo aprendido en DataHarvest (scraping) con ingeniería de datos para crear un producto útil y funcional.
+TenantAPI es una API multi-tenant que simula un SaaS real. Múltiples organizaciones (tenants) comparten la misma instancia de base de datos pero con **aislamiento completo de datos** usando **Row-Level Security (RLS)** de PostgreSQL. Cada tenant tiene sus propios usuarios, datos y configuración, sin poder acceder a datos de otros tenants.
+
+Este es un patrón **extremadamente valorado** en empresas SaaS. El proyecto aplica **Layered Architecture**, **Alembic** con migraciones multi-tenant, **TDD**, **API First**, y **eventos de dominio** (`TenantCreated`, `UserInvited`). Implementa el **Repository Pattern** con inyección automática del tenant_id para aislamiento transparente.
+
+---
+
+## 🏗️ Arquitectura (Layered + Multi-tenant RLS)
+
+```
+┌────────────────────────────────────────────────┐
+│  Request HTTP (JWT con tenant_id en claims)     │
+│  Authorization: Bearer <token>                  │
+└───────────────────┬────────────────────────────┘
+                    │
+┌───────────────────▼────────────────────────────┐
+│            Middleware Layer                      │
+│  TenantMiddleware: extrae tenant_id del JWT     │
+│  → SET app.current_tenant = 'tenant_123'        │
+├────────────────────────────────────────────────┤
+│            Controllers Layer                    │
+│  TenantController  UserController  DataController│
+│  Request DTO → Validación → Response DTO        │
+├────────────────────────────────────────────────┤
+│             Services Layer                      │
+│  TenantService  UserService  DataService        │
+│  Lógica de negocio (sin preocuparse por tenant) │
+├────────────────────────────────────────────────┤
+│            Events Layer                         │
+│  TenantCreated → listener crea schema/policies  │
+│  UserInvited → listener envía email             │
+├────────────────────────────────────────────────┤
+│           Repositories Layer                    │
+│  BaseRepository (inyecta tenant_id automático)  │
+│  → PostgreSQL con RLS Policies                  │
+│  → Alembic (migraciones multi-tenant)           │
+└────────────────────────────────────────────────┘
+```
 
 ---
 
 ## ✨ Features
 
-### Monitoreo
+### Multi-tenancy
 
-- [ ] Configuración de productos a monitorear (URL + selector CSS)
-- [ ] Scraping periódico con Selenium
-- [ ] Detección de cambios de precio
-- [ ] Historial de precios por producto
-- [ ] Soporte para múltiples sitios web
+- [ ] Registro de nuevos tenants (organizaciones)
+- [ ] Aislamiento por Row-Level Security (RLS) en PostgreSQL
+- [ ] Middleware que inyecta `tenant_id` desde JWT automáticamente
+- [ ] **Zero data leakage**: un tenant nunca ve datos de otro
+- [ ] Test de aislamiento: intentar acceder a datos de otro tenant → 403
 
-### Análisis
+### Gestión de Tenants
 
-- [ ] Tendencias de precio (subida/bajada/estable)
-- [ ] Precio mínimo, máximo y promedio histórico
-- [ ] Gráficos de evolución de precio (Plotly)
-- [ ] Detección de ofertas (caída significativa)
+- [ ] CRUD de tenants (crear, leer, actualizar, desactivar)
+- [ ] Configuración por tenant (timezone, idioma, plan)
+- [ ] Límites por plan (Free: 5 usuarios, Pro: 50, Enterprise: ilimitado)
+- [ ] Onboarding: seed de datos iniciales al crear tenant
 
-### Alertas
+### Usuarios y Roles
 
-- [ ] Alerta cuando el precio baja de un umbral
-- [ ] Alerta por cambio porcentual
-- [ ] Notificación por email (SMTP)
-- [ ] Log de alertas enviadas
+- [ ] Registro e invitación de usuarios dentro de un tenant
+- [ ] Roles: Admin, Member, Viewer (por tenant)
+- [ ] JWT con claims: `{ tenant_id, user_id, role }`
+- [ ] Un usuario puede pertenecer a múltiples tenants
 
-### API y CLI
+### Datos Multi-tenant (ejemplo: Proyectos)
 
-- [ ] CLI para agregar/remover productos
-- [ ] API para consultar precios e historial
-- [ ] Dashboard de precios (HTML estático con gráficos)
+- [ ] CRUD de proyectos (scoped al tenant automáticamente)
+- [ ] Búsqueda y filtros (solo del tenant actual)
+- [ ] Paginación
+
+### Eventos de Dominio
+
+- [ ] `TenantCreated` — listener crea RLS policies y seed data
+- [ ] `UserInvited` — listener envía email de invitación
+- [ ] `PlanUpgraded` — listener ajusta límites
 
 ---
 
 ## 🛠️ Stack técnico
 
-| Tecnología   | Propósito                   |
-| ------------ | --------------------------- |
-| **Selenium** | Web scraping                |
-| **Pandas**   | Análisis de datos           |
-| **SQLite**   | Almacenamiento de historial |
-| **Plotly**   | Gráficos de precios         |
-| **FastAPI**  | API REST                    |
-| **smtplib**  | Alertas por email           |
-| **Typer**    | CLI                         |
-| **Docker**   | Containerización            |
+| Tecnología         | Propósito                             |
+| ------------------ | ------------------------------------- |
+| **FastAPI**        | API REST (Layered Architecture)       |
+| **PostgreSQL**     | BD con Row-Level Security             |
+| **Alembic**        | Migraciones multi-tenant              |
+| **SQLAlchemy**     | ORM + Repository pattern + RLS aware  |
+| **Pydantic**       | DTOs (Request/Response schemas)       |
+| **PyJWT**          | Autenticación con tenant claims       |
+| **Docker Compose** | Infraestructura                       |
+| **pytest**         | Testing (TDD)                         |
+| **Testcontainers** | Tests con PostgreSQL + RLS real       |
+
+---
+
+## 📡 Endpoints de la API
+
+```
+# Tenants (super-admin)
+POST   /api/v1/tenants                        # Crear tenant
+GET    /api/v1/tenants                         # Listar tenants
+GET    /api/v1/tenants/{id}                    # Obtener tenant
+PATCH  /api/v1/tenants/{id}                    # Actualizar tenant
+
+# Auth (per-tenant)
+POST   /api/v1/auth/login                     # Login (devuelve JWT con tenant_id)
+POST   /api/v1/auth/register                  # Registro dentro del tenant
+
+# Users (scoped al tenant del JWT)
+GET    /api/v1/users                           # Listar usuarios del tenant
+POST   /api/v1/users/invite                    # Invitar usuario al tenant
+PATCH  /api/v1/users/{id}/role                 # Cambiar rol
+
+# Projects (scoped al tenant automáticamente via RLS)
+POST   /api/v1/projects                        # Crear proyecto
+GET    /api/v1/projects                        # Listar (solo del tenant)
+GET    /api/v1/projects/{id}                   # Obtener (solo si es del tenant)
+PUT    /api/v1/projects/{id}                   # Actualizar
+DELETE /api/v1/projects/{id}                   # Eliminar
+```
 
 ---
 
@@ -68,43 +139,53 @@ PriceWatch es un sistema que monitorea precios de productos en sitios web de e-c
 
 ### Sábado
 
-| Hora           | Actividad                                        |
-| -------------- | ------------------------------------------------ |
-| 🌅 9:00-10:30  | Setup + modelo de datos para productos y precios |
-| 🌅 10:30-12:00 | Motor de scraping configurable por producto      |
-| 🌞 12:00-13:00 | Almacenamiento de historial en SQLite            |
-| 🌞 14:00-16:00 | Detección de cambios + sistema de alertas        |
-| 🌆 16:00-18:00 | CLI para gestión de productos                    |
+| Hora           | Actividad                                                         |
+| -------------- | ----------------------------------------------------------------- |
+| 🌅 9:00-10:00  | Diseño UML (clases multi-tenant + secuencia RLS) + contrato OpenAPI |
+| 🌅 10:00-10:30 | TDD: tests de aislamiento (tenant A no ve datos de tenant B)     |
+| 🌅 10:30-12:00 | Alembic: migraciones + RLS policies en PostgreSQL                 |
+| 🌞 12:00-13:00 | Middleware: TenantMiddleware + BaseRepository con tenant_id       |
+| 🌞 14:00-16:00 | Layered: Controllers + Services + Repositories + DTOs             |
+| 🌆 16:00-18:00 | Auth: JWT con tenant claims + roles                               |
 
 ### Domingo
 
-| Hora           | Actividad                         |
-| -------------- | --------------------------------- |
-| 🌅 9:00-10:30  | Análisis: tendencias, min/max/avg |
-| 🌅 10:30-12:00 | Gráficos con Plotly               |
-| 🌞 13:00-14:30 | API REST para consultas           |
-| 🌞 14:30-16:00 | Tests                             |
-| 🌆 16:00-17:00 | README y documentación            |
+| Hora           | Actividad                                                     |
+| -------------- | ------------------------------------------------------------- |
+| 🌅 9:00-10:30  | CRUD projects (RLS en acción — aislamiento automático)        |
+| 🌅 10:30-12:00 | Eventos: TenantCreated, UserInvited + listeners               |
+| 🌞 13:00-14:30 | Límites por plan (Free/Pro/Enterprise)                        |
+| 🌞 14:30-16:00 | Testcontainers: tests con PostgreSQL + RLS real + aislamiento |
+| 🌆 16:00-17:00 | README con diagramas UML y documentación de seguridad         |
 
 ---
 
 ## ✅ Definición de "hecho"
 
-- [ ] Monitoreo funcional de al menos 3 productos
-- [ ] Historial de precios persistente
-- [ ] Al menos 1 tipo de alerta funcional
-- [ ] Gráficos de tendencia
-- [ ] CLI y/o API funcional
-- [ ] Tests
-- [ ] README con setup y ejemplos
+- [ ] Contrato OpenAPI definido antes del código (API First)
+- [ ] TDD: tests de aislamiento escritos primero
+- [ ] Layered Architecture: Controller → Service → Repository → DTO
+- [ ] **Row-Level Security** funcionando (zero data leakage)
+- [ ] Test de seguridad: tenant A no puede acceder a datos de tenant B
+- [ ] Eventos: TenantCreated, UserInvited
+- [ ] Migraciones Alembic con RLS policies
+- [ ] JWT con tenant_id en claims
+- [ ] Tests con Testcontainers (PostgreSQL con RLS)
+- [ ] Diagramas UML (clases + secuencia del flujo multi-tenant)
+- [ ] Docker Compose funcional
+- [ ] GitFlow: ramas feature/*, develop, main
 
 ---
 
 ## 💼 Lo que demuestra al reclutador
 
-| Habilidad          | Evidencia                             |
-| ------------------ | ------------------------------------- |
-| Scraping avanzado  | Monitoreo periódico, múltiples sitios |
-| Análisis de datos  | Tendencias, estadísticas, Plotly      |
-| Producto funcional | Sistema útil de verdad                |
-| Automatización     | Alertas, ejecución periódica          |
+| Habilidad              | Evidencia                                       |
+| ---------------------- | ----------------------------------------------- |
+| **Multi-tenancy**      | RLS, aislamiento, zero data leakage             |
+| **PostgreSQL avanzado**| Row-Level Security, policies, claims-based       |
+| **Arquitectura SaaS**  | Patrón real usado en producción                 |
+| Layered Architecture   | Controller → Service → Repository → DTO         |
+| TDD / API First        | Tests de seguridad primero                       |
+| Event-Driven           | TenantCreated, UserInvited eventos               |
+| Testcontainers         | Tests con PostgreSQL + RLS real                  |
+| Seguridad              | JWT multi-tenant, roles, permisos                |

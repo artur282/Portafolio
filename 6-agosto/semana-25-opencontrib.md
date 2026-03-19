@@ -1,6 +1,6 @@
 # 🤝 Semana 25 — OpenContrib
 
-> **Retribuyendo a la comunidad: Contribuciones reales a Open Source**
+> **Contribuciones Open Source con Code Review, documentación técnica y TDD**
 
 | Campo              | Detalle                 |
 | ------------------ | ----------------------- |
@@ -13,7 +13,9 @@
 
 ## 🎯 Descripción
 
-Esta semana no se trata de construir un proyecto propio desde cero, sino de demostrar la capacidad de leer, entender y mejorar bases de código ajenas. El objetivo es realizar al menos una contribución significativa (PR merged o approved) a una librería o herramienta utilizada durante el portafolio (ej: FastAPI, LangChain, librerías de componentes, etc.) o a proyectos "Good First Issue".
+Esta semana no se trata de construir un proyecto propio desde cero, sino de demostrar la capacidad de leer, entender y mejorar bases de código ajenas. El objetivo es realizar al menos una contribución significativa (PR merged o approved) a una librería o herramienta utilizada durante el portafolio.
+
+**Enfoque especial en Code Review y documentación técnica** — soft skills clave de la propuesta laboral. Incluye participar en reviews de PRs de otros contribuidores, escribir documentación técnica profesional, y buscar issues en repos de **FastAPI, LangChain, pytest** (herramientas usadas en el portafolio).
 
 ---
 
@@ -21,23 +23,33 @@ Esta semana no se trata de construir un proyecto propio desde cero, sino de demo
 
 ### 1. Identificación (Pre-fin de semana)
 
-- Buscar issues etiquetados como `good first issue`, `documentation`, `help wanted` en repositorios que usaste.
-- Candidatos ideales: Plugins de FastAPI, extensiones de Django, herramientas CLI de Python, librerías de UI.
+- Buscar issues etiquetados como `good first issue`, `documentation`, `help wanted`
+- Candidatos ideales: **FastAPI plugins, LangChain, pytest plugins, Pydantic**
+- Revisar repos de herramientas usadas en el portafolio
 
-### 2. Ejecución
+### 2. Ejecución (TDD)
 
-- Forkear y clonar el repositorio.
-- Reproducir el bug o entender la feature request.
-- Escribir tests que fallen (TDD).
-- Implementar la solución.
-- Pasar todos los tests existentes y los nuevos.
-- Actualizar documentación si es necesario.
+- Forkear y clonar el repositorio
+- Reproducir el bug o entender la feature request
+- **TDD: Escribir tests que fallen primero** (Rojo)
+- Implementar la solución (Verde)
+- Refactorizar (Refactor)
+- Pasar todos los tests existentes y los nuevos
+- Actualizar documentación si es necesario
 
-### 3. Comunicación
+### 3. Code Review (Soft Skill clave)
 
-- Escribir un PR Description profesional y detallado.
-- Explicar el "Por qué" y el "Cómo".
-- Ser receptivo al feedback de los maintainers.
+- **Participar en reviews de PRs de otros** contribuidores del mismo repo
+- Dar feedback técnico constructivo, sin egos
+- Escribir un **PR Description profesional**: título claro, contexto, capturas
+- Ser receptivo al feedback de los maintainers
+- Documentar aprendizajes sobre convenciones del proyecto
+
+### 4. Documentación Técnica
+
+- Diagrama de secuencia UML del fix/feature implementada
+- Guía de onboarding del módulo contribuido
+- Documentación del "Por qué" y el "Cómo" en el PR
 
 ---
 
@@ -45,10 +57,11 @@ Esta semana no se trata de construir un proyecto propio desde cero, sino de demo
 
 | Tecnología              | Propósito                                         |
 | ----------------------- | ------------------------------------------------- |
-| **Git & GitHub**        | Flujo de contribución estándar (Fork, Branch, PR) |
-| **Pytest / Jest**       | Ejecución de suites de tests de terceros          |
+| **Git & GitHub**        | Flujo de contribución (Fork, Branch, PR)          |
+| **Pytest / Jest**       | Ejecución de suites de tests (TDD)                |
 | **Virtualenv / Docker** | Aislar entornos de desarrollo ajenos              |
 | **Markdown**            | Documentación del PR                              |
+| **PlantUML / Mermaid**  | Diagramas técnicos del fix/feature                |
 
 ---
 
@@ -58,37 +71,42 @@ Esta semana no se trata de construir un proyecto propio desde cero, sino de demo
 
 | Hora           | Actividad                                                                       |
 | -------------- | ------------------------------------------------------------------------------- |
-| 🌅 9:00-11:00  | Selección final del issue y setup del entorno de desarrollo local del proyecto. |
-| 🌅 11:00-13:00 | "Arqueología de código": Leer y entender el módulo afectado.                    |
-| 🌞 13:00-14:00 | Reproducción del problema (crear test case de reproducción).                    |
-| 🌞 14:00-16:00 | Coding: Implementar el fix o la feature.                                        |
-| 🌆 16:00-18:00 | Verificar que no haya regresiones (correr suite completa).                      |
+| 🌅 9:00-11:00  | Selección del issue + setup del entorno local del proyecto                     |
+| 🌅 11:00-13:00 | "Arqueología de código": leer y entender el módulo afectado                    |
+| 🌞 13:00-14:00 | TDD: escribir test que falla reproduciendo el problema                         |
+| 🌞 14:00-16:00 | Implementar el fix (Verde) + Refactorizar                                      |
+| 🌆 16:00-18:00 | Verificar no regresiones + **revisar 1-2 PRs de otros** (Code Review)          |
 
 ### Domingo
 
 | Hora           | Actividad                                                                            |
 | -------------- | ------------------------------------------------------------------------------------ |
-| 🌅 9:00-11:00  | Pulir código (naming, comments, linting estricto del proyecto).                      |
-| 🌅 11:00-12:30 | Escribir documentación si aplica.                                                    |
-| 🌞 13:00-14:30 | Preparar el Pull Request: Título claro, descripción, screenshots.                    |
-| 🌞 14:30-16:00 | Buscar un segundo issue pequeño (ej: typos en docs) en otro repo.                    |
-| 🌆 16:00-17:00 | Documentar la experiencia en el `semana-25-opencontrib.md` (diario de contribución). |
+| 🌅 9:00-11:00  | Pulir código + documentación técnica (diagrama UML del fix)                         |
+| 🌅 11:00-12:30 | Preparar PR: título claro, descripción detallada, screenshots                        |
+| 🌞 13:00-14:30 | **Code Review**: revisar más PRs + dar feedback constructivo                         |
+| 🌞 14:30-16:00 | Buscar un segundo issue pequeño en otro repo                                         |
+| 🌆 16:00-17:00 | Documentar la experiencia en `CONTRIBUTION_LOG.md`                                   |
 
 ---
 
 ## ✅ Definición de "hecho"
 
-- [ ] Al menos 1 Pull Request enviado a un repositorio público activo.
-- [ ] El PR pasa los checks automáticos (CI) del repositorio.
-- [ ] Documento `CONTRIBUTION_LOG.md` creado en tu portafolio explicando qué hiciste, links a los PRs y qué aprendiste.
+- [ ] TDD aplicado: test que falla → fix → refactor
+- [ ] Al menos 1 Pull Request enviado a un repositorio público activo
+- [ ] Al menos 2 Code Reviews a PRs de otros contribuidores
+- [ ] PR con documentación técnica profesional (diagrama UML incluido)
+- [ ] El PR pasa los checks automáticos (CI) del repositorio
+- [ ] `CONTRIBUTION_LOG.md` con links, aprendizajes y screenshots de reviews
 
 ---
 
 ## 💼 Lo que demuestra al reclutador
 
-| Habilidad         | Evidencia                                   |
-| ----------------- | ------------------------------------------- |
-| Trabajo en equipo | Interacción con normas de código ajenas     |
-| Code Reading      | Capacidad de navegar codebases desconocidos |
-| Git               | Manejo avanzado de flujos de colaboración   |
-| Iniciativa        | Proactividad para mejorar el ecosistema     |
+| Habilidad              | Evidencia                                   |
+| ---------------------- | ------------------------------------------- |
+| **Code Review**        | Reviews constructivos a PRs de otros        |
+| **Documentación**      | PR description profesional, diagramas       |
+| **TDD**                | Test primero en el fix del issue             |
+| Trabajo en equipo      | Interacción con normas de código ajenas     |
+| Code Reading           | Capacidad de navegar codebases desconocidos |
+| Proactividad           | Mejora proactiva del ecosistema             |

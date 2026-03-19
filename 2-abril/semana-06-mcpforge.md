@@ -15,11 +15,11 @@
 
 MCPForge es un servidor Model Context Protocol (MCP) que expone un conjunto de herramientas útiles para asistentes de IA. El proyecto implementa el protocolo MCP desde cero (usando el SDK oficial), creando tools, resources y prompts que cualquier cliente MCP compatible puede consumir.
 
-Este proyecto demuestra comprensión profunda de cómo funciona la infraestructura de IA moderna — no solo usarla, sino construirla.
+El proyecto aplica **Layered Architecture** para separar la lógica de herramientas del transporte del protocolo, utiliza **TDD** para garantizar el correcto funcionamiento de cada tool, y emite **eventos de auditoría** (`ToolExecuted`) para trazabilidad. Documenta la arquitectura con **diagramas UML de clases** que modelan la jerarquía de tools/resources/prompts.
 
 ---
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura (Layered Architecture)
 
 ```
 ┌──────────────────────────────────┐
@@ -27,22 +27,19 @@ Este proyecto demuestra comprensión profunda de cómo funciona la infraestructu
 └───────────────┬──────────────────┘
                 │ (stdio / SSE)
        ┌────────▼────────┐
-       │   MCP Server     │
-       │   (Python SDK)   │
+       │  Transport Layer │  ← Controllers
+       │  (stdio / SSE)   │
        ├──────────────────┤
-       │   Tools:         │
-       │   ├─ db_query     │
-       │   ├─ file_search  │
-       │   ├─ api_call     │
-       │   └─ text_process │
+       │  Service Layer    │  ← Tool orchestration
+       │  (ToolService,    │
+       │   ResourceService)│
        ├──────────────────┤
-       │   Resources:     │
-       │   ├─ config      │
-       │   └─ docs         │
+       │  Repository Layer │  ← Data access
+       │  (DB, Files, APIs)│
        ├──────────────────┤
-       │   Prompts:       │
-       │   ├─ analyze     │
-       │   └─ summarize   │
+       │  Events Layer     │  ← Auditoría
+       │  ToolExecuted,    │
+       │  ResourceAccessed │
        └──────────────────┘
 ```
 
@@ -70,10 +67,16 @@ Este proyecto demuestra comprensión profunda de cómo funciona la infraestructu
 - [ ] Template de resumen de documentos
 - [ ] Templates personalizables
 
+### Eventos de Auditoría (Event-Driven)
+
+- [ ] `ToolExecuted` — Log de cada invocación de herramienta (input, output, duración)
+- [ ] `ResourceAccessed` — Registro de accesos a recursos
+- [ ] Listener de auditoría que persiste logs estructurados
+
 ### Infraestructura
 
 - [ ] Transporte stdio y SSE
-- [ ] Logging estructurado
+- [ ] Logging estructurado con TraceID
 - [ ] Manejo de errores del protocolo
 - [ ] Configuración por archivo
 - [ ] Docker para distribución
@@ -89,38 +92,52 @@ Este proyecto demuestra comprensión profunda de cómo funciona la infraestructu
 | **SQLite**         | Base de datos demo           |
 | **httpx**          | Llamadas HTTP async          |
 | **Docker**         | Containerización             |
-| **pytest**         | Testing                      |
-| **Pydantic**       | Validación de inputs         |
+| **pytest**         | Testing (TDD)                |
+| **Pydantic**       | Validación de inputs (DTOs)  |
 
 ---
 
-## 📁 Estructura del proyecto
+## 📁 Estructura del proyecto (Layered Architecture)
 
-```
+```text
 mcpforge/
+├── docs/
+│   └── uml/
+│       ├── class-diagram.puml       # Clases: Tool, Resource, Prompt hierarchy
+│       └── sequence-tool-exec.puml  # Secuencia: invocación de herramienta
 ├── server/
 │   ├── __init__.py
-│   ├── main.py               # Entry point del servidor MCP
+│   ├── main.py                      # Entry point del servidor MCP
+│   ├── controllers/
+│   │   └── transport.py             # Capa de transporte (stdio/SSE)
+│   ├── services/
+│   │   ├── tool_service.py          # Orquestación de herramientas
+│   │   └── resource_service.py      # Gestión de recursos
 │   ├── tools/
-│   │   ├── database.py       # query_database tool
-│   │   ├── files.py          # search_files tool
-│   │   ├── api.py            # call_api tool
-│   │   ├── text.py           # process_text tool
-│   │   └── reports.py        # generate_report tool
+│   │   ├── database.py              # query_database tool
+│   │   ├── files.py                 # search_files tool
+│   │   ├── api.py                   # call_api tool
+│   │   ├── text.py                  # process_text tool
+│   │   └── reports.py               # generate_report tool
 │   ├── resources/
-│   │   ├── config.py         # Recursos de configuración
-│   │   └── docs.py           # Recursos de documentación
+│   │   ├── config.py                # Recursos de configuración
+│   │   └── docs.py                  # Recursos de documentación
 │   ├── prompts/
-│   │   └── templates.py      # Templates de prompts
+│   │   └── templates.py             # Templates de prompts
+│   ├── events/
+│   │   ├── publishers.py            # ToolExecuted, ResourceAccessed
+│   │   └── listeners.py             # Auditoría y logging
 │   └── utils/
 │       ├── logger.py
 │       └── validators.py
 ├── tests/
-│   ├── test_tools.py
-│   ├── test_resources.py
-│   └── test_server.py
+│   ├── unit/
+│   │   └── test_tools.py
+│   ├── integration/
+│   │   └── test_server.py
+│   └── conftest.py
 ├── config/
-│   └── server.toml            # Configuración
+│   └── server.toml
 ├── docker-compose.yml
 ├── Dockerfile
 ├── pyproject.toml
@@ -133,44 +150,51 @@ mcpforge/
 
 ### Sábado
 
-| Hora           | Actividad                                  |
-| -------------- | ------------------------------------------ |
-| 🌅 9:00-10:30  | Estudiar MCP SDK, setup del proyecto       |
-| 🌅 10:30-12:00 | Servidor MCP básico con una tool funcional |
-| 🌞 12:00-13:00 | Tool: query_database con SQLite            |
-| 🌞 14:00-16:00 | Tools: search_files, call_api              |
-| 🌆 16:00-18:00 | Tools: process_text, generate_report       |
+| Hora           | Actividad                                                  |
+| -------------- | ---------------------------------------------------------- |
+| 🌅 9:00-10:00  | Diseño UML (diagrama de clases de tools/resources/prompts) |
+| 🌅 10:00-10:30 | TDD: escribir tests para query_database y search_files     |
+| 🌅 10:30-12:00 | Servidor MCP básico con Layered Architecture               |
+| 🌞 12:00-13:00 | Tool: query_database con SQLite (Service + Repository)     |
+| 🌞 14:00-16:00 | Tools: search_files, call_api (cada uno con tests)         |
+| 🌆 16:00-18:00 | Tools: process_text, generate_report + eventos ToolExecuted|
 
 ### Domingo
 
-| Hora           | Actividad                           |
-| -------------- | ----------------------------------- |
-| 🌅 9:00-10:30  | Resources: config y docs            |
-| 🌅 10:30-12:00 | Prompts: templates                  |
-| 🌞 13:00-14:30 | Transporte SSE + testing            |
-| 🌞 14:30-16:00 | Docker + configuración              |
-| 🌆 16:00-17:00 | README y documentación de cada tool |
+| Hora           | Actividad                                         |
+| -------------- | ------------------------------------------------- |
+| 🌅 9:00-10:30  | Resources: config y docs + evento ResourceAccessed|
+| 🌅 10:30-12:00 | Prompts: templates                                |
+| 🌞 13:00-14:30 | Transporte SSE + testing de integración           |
+| 🌞 14:30-16:00 | Docker + configuración                            |
+| 🌆 16:00-17:00 | README, diagramas UML finales y docs de cada tool |
 
 ---
 
 ## ✅ Definición de "hecho"
 
+- [ ] TDD: tests escritos primero para cada tool
+- [ ] Layered Architecture: Transport → Service → Repository
 - [ ] Servidor MCP funcional con al menos 4 tools
+- [ ] Eventos de auditoría: ToolExecuted publicado y consumido
+- [ ] Diagrama de clases UML documentado
 - [ ] Al menos 2 resources expuestos
 - [ ] Al menos 2 prompt templates
 - [ ] Funciona con cliente MCP real
-- [ ] Tests de cada herramienta
 - [ ] Docker funcional
 - [ ] README con instrucciones de integración
+- [ ] GitFlow: ramas feature/*, develop, main
 
 ---
 
 ## 💼 Lo que demuestra al reclutador
 
-| Habilidad       | Evidencia                              |
-| --------------- | -------------------------------------- |
-| MCP / IA infra  | Implementación del protocolo desde SDK |
-| Arquitectura    | Diseño modular de herramientas         |
-| Python avanzado | Async, protocolos, SDK                 |
-| Innovación      | Tecnología de vanguardia               |
-| Documentación   | Cada tool documentada                  |
+| Habilidad              | Evidencia                              |
+| ---------------------- | -------------------------------------- |
+| Layered Architecture   | Transport → Service → Repository       |
+| TDD                    | Tests escritos antes del código        |
+| Event-Driven           | Eventos de auditoría ToolExecuted      |
+| UML / Documentación    | Diagrama de clases de herramientas     |
+| MCP / IA infra         | Implementación del protocolo desde SDK |
+| Python avanzado        | Async, protocolos, SDK                 |
+| Innovación             | Tecnología de vanguardia               |

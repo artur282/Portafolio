@@ -1,6 +1,6 @@
 # 🤖 Semana 22 — AutomateAI
 
-> **Plataforma de automatización de flujos de trabajo impulsada por IA (Capstone Project 1)**
+> **Plataforma de automatización potenciada por IA — Capstone con Patrones GoF y Event-Driven**
 
 | Campo              | Detalle             |
 | ------------------ | ------------------- |
@@ -13,13 +13,13 @@
 
 ## 🎯 Descripción
 
-AutomateAI es el primer proyecto Capstone del portafolio. Es una plataforma ambiciosa que integra automatización de flujos de trabajo (similar a n8n/Zapier) pero potenciada nativamente por Inteligencia Artificial. Permite a los usuarios describir una tarea en lenguaje natural y la plataforma genera y ejecuta el flujo de automatización correspondiente conectando APIs, bases de datos y procesamiento de lógica.
+AutomateAI es el primer proyecto Capstone. Es una plataforma que integra automatización de flujos de trabajo potenciada por IA. Permite describir una tarea en lenguaje natural y la plataforma genera y ejecuta el flujo de automatización correspondiente.
 
-Combina: Backend robusto (FastAPI), IA (LangChain/OpenAI), Automatización (Celery/Workers) y una interfaz moderna (React).
+Combina: Backend robusto (FastAPI con **Layered Architecture**), **Patrones GoF** (Strategy, Observer, Command), IA (LangChain/OpenAI), automatización con **Event-Driven Architecture** nativa (Celery workers como listeners de eventos), **Alembic** para migraciones, y **Testcontainers**. Documenta la arquitectura con **diagramas UML** (clases, secuencia, estado).
 
 ---
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura (Layered + Event-Driven + GoF Patterns)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -27,54 +27,64 @@ Combina: Backend robusto (FastAPI), IA (LangChain/OpenAI), Automatización (Cele
 │  (Chat Interface + Visual Workflow Builder + Dashboard)     │
 └─────────────────────────────┬───────────────────────────────┘
                               │ REST / WebSocket
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│                      Backend (FastAPI)                       │
-│  ┌────────────┐   ┌────────────┐   ┌─────────────────────┐  │
-│  │  API Gateway │   │ Auth Module│   │ Workflow Orkestrator│  │
-│  └────────────┘   └────────────┘   └─────────────────────┘  │
-└─────────────┬───────────────────────────────┬───────────────┘
-              │                               │
-    ┌─────────▼─────────┐           ┌─────────▼─────────┐
-    │  AI Engine (RAG)  │           │   Execution Engine │
-    │ (LangChain + LLM) │           │  (Celery Workers)  │
-    └───────────────────┘           └─────────┬─────────┘
-                                              │
-                                    ┌─────────▼─────────┐
-                                    │ Integrations Hub  │
-                                    │ (Gmail, Slack, DB)│
-                                    └───────────────────┘
+┌─────────────────────────────▼───────────────────────────────┐
+│                  Controllers Layer                            │
+│  WorkflowController  ChatController  ExecutionController     │
+│  Request DTOs → Validación → Response DTOs                   │
+├──────────────────────────────────────────────────────────────┤
+│                   Services Layer                              │
+│  WorkflowService (Command Pattern — GoF)                     │
+│  AIService (Strategy Pattern — GoF) → LangChain              │
+│  ExecutionService (Observer Pattern — GoF)                    │
+├──────────────────────────────────────────────────────────────┤
+│                    Events Layer                               │
+│  WorkflowCreated → ExecutionStarted → NodeCompleted          │
+│  Celery Workers como Listeners                                │
+│  Circuit Breaker en integraciones externas                    │
+├──────────────────────────────────────────────────────────────┤
+│                 Repositories Layer                            │
+│  WorkflowRepository  ExecutionRepository                     │
+│  → PostgreSQL (Alembic)                                      │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## ✨ Features
 
-### IA Core
+### IA Core (Strategy Pattern)
 
-- [ ] **Generador de Workflows**: Input de texto ("Guarda los emails de facturas en Dropbox") -> JSON Workflow.
-- [ ] **Agente Inteligente**: Capacidad de decisión condicional dentro del flujo basada en contenido.
-- [ ] **Data Mapping AI**: Mapeo automático de campos entre servicios distintos.
+- [ ] **Generador de Workflows**: texto → JSON Workflow (Strategy Pattern para diferentes LLMs)
+- [ ] **Agente Inteligente**: decisión condicional basada en contenido
+- [ ] **Data Mapping AI**: mapeo automático de campos entre servicios
 
-### Motor de Ejecución
+### Motor de Ejecución (Command + Observer Patterns)
 
-- [ ] Ejecución asíncrona de tareas en cadena.
-- [ ] Manejo de estado y paso de datos entre nodos.
-- [ ] Logs de ejecución en tiempo real.
-- [ ] Retry policies inteligentes.
+- [ ] Cada nodo del workflow es un Command (GoF)
+- [ ] Observer: listeners reciben eventos de ejecución en tiempo real
+- [ ] Logs de ejecución en tiempo real
+- [ ] Retry policies inteligentes
+- [ ] **Circuit Breaker** en integraciones externas
+
+### Eventos de Dominio (Event-Driven Architecture)
+
+- [ ] `WorkflowCreated` — listener valida y prepara ejecución
+- [ ] `ExecutionStarted` — listener notifica al frontend via WebSocket
+- [ ] `NodeCompleted` — listener ejecuta siguiente nodo
+- [ ] `ExecutionFailed` — listener ejecuta compensación
 
 ### Integraciones (Nodos)
 
-- [ ] **Trigger**: Webhook, Cron, Email recibido.
-- [ ] **Action**: HTTP Request, Email Send, Slack Message.
-- [ ] **Logic**: If/Else (AI based), Loop.
-- [ ] **Data**: Database Insert/Query.
+- [ ] **Trigger**: Webhook, Cron, Email recibido
+- [ ] **Action**: HTTP Request, Email Send, Slack Message
+- [ ] **Logic**: If/Else (AI based), Loop
+- [ ] **Data**: Database Insert/Query
 
-### UI/UX
+### UML y Documentación
 
-- [ ] Editor visual de nodos (React Flow).
-- [ ] Chat para generación asistida.
-- [ ] Historial de ejecuciones.
+- [ ] Diagrama de clases: Strategy, Command, Observer patterns
+- [ ] Diagrama de secuencia: generación y ejecución de workflow
+- [ ] Diagrama de estado: estados del workflow (Draft → Running → Completed → Failed)
 
 ---
 
@@ -82,14 +92,16 @@ Combina: Backend robusto (FastAPI), IA (LangChain/OpenAI), Automatización (Cele
 
 | Tecnología             | Propósito                             |
 | ---------------------- | ------------------------------------- |
-| **FastAPI**            | Backend API                           |
-| **LangChain**          | Lógica de IA y generación de flujos   |
-| **Vector DBs**         | Pinecone, Chroma, Weaviate o pgvector |
-| **Celery**             | Orquestación de tareas distribuidas   |
-| **Redis**              | Broker de mensajería y caché          |
-| **PostgreSQL**         | Persistencia de datos y definiciones  |
+| **FastAPI**            | Backend (Layered Architecture)        |
+| **LangChain**          | IA y generación de flujos             |
+| **Celery**             | Workers (listeners de eventos)        |
+| **Redis**              | Broker de mensajería                  |
+| **PostgreSQL**         | Persistencia                          |
+| **Alembic**            | Migraciones de esquema BD             |
 | **React + React Flow** | Frontend interactivo                  |
 | **Docker Compose**     | Infraestructura completa              |
+| **pytest**             | Testing (TDD)                         |
+| **Testcontainers**     | Tests con Redis + PostgreSQL          |
 
 ---
 
@@ -99,39 +111,48 @@ Combina: Backend robusto (FastAPI), IA (LangChain/OpenAI), Automatización (Cele
 
 | Hora           | Actividad                                                                        |
 | -------------- | -------------------------------------------------------------------------------- |
-| 🌅 9:00-10:00  | **Arquitectura**: Definir esquema JSON del workflow y modelos de datos.          |
-| 🌅 10:00-12:00 | **AI Engine**: Prompt engineering para traducir texto a JSON de workflow válido. |
-| 🌞 12:00-13:00 | **Backend Core**: API para guardar y recuperar workflows.                        |
-| 🌞 14:00-16:00 | **Execution Engine**: Celery workers que interpretan y ejecutan el JSON.         |
-| 🌆 16:00-18:00 | **Integraciones**: Crear nodos básicos (Webhook, HTTP, Log).                     |
+| 🌅 9:00-10:00  | Diseño UML (clases GoF + secuencia + estado) + Alembic migraciones              |
+| 🌅 10:00-11:00 | TDD: tests de integración del flujo texto → workflow → ejecución                |
+| 🌅 11:00-12:00 | Layered: Controllers + Services (Strategy, Command, Observer) + Repos           |
+| 🌞 12:00-13:00 | AI Engine: Strategy Pattern para LLMs + prompt para generar workflow JSON       |
+| 🌞 14:00-16:00 | Execution Engine: Command Pattern + eventos NodeCompleted + Circuit Breaker     |
+| 🌆 16:00-18:00 | Integraciones: nodos Webhook, HTTP, Log                                          |
 
 ### Domingo
 
 | Hora           | Actividad                                                                    |
 | -------------- | ---------------------------------------------------------------------------- |
-| 🌅 9:00-11:00  | **Frontend**: Integrar React Flow para visualización (solo lectura inicial). |
-| 🌅 11:00-12:30 | **Frontend**: Chat interface para interactuar con el AI Engine.              |
-| 🌞 13:00-14:30 | **Conexión Total**: Frontend -> AI -> Backend save -> Execution.             |
-| 🌞 14:30-16:00 | **Polish**: Logs en tiempo real y manejo de errores.                         |
-| 🌆 16:00-17:00 | **Demo**: Grabar un video corto de uso (GIF para README).                    |
+| 🌅 9:00-11:00  | Frontend: React Flow para visualización                                      |
+| 🌅 11:00-12:30 | Frontend: Chat interface para interactuar con AI                             |
+| 🌞 13:00-14:30 | Testcontainers: tests con Redis + PostgreSQL + Eventos end-to-end            |
+| 🌞 14:30-16:00 | Eventos: WorkflowCreated, ExecutionStarted + listeners + Circuit Breaker     |
+| 🌆 16:00-17:00 | README con diagramas UML (clases, secuencia, estado)                         |
 
 ---
 
 ## ✅ Definición de "hecho"
 
-- [ ] Un usuario puede escribir un prompt y se genera un flujo gráfico.
-- [ ] El flujo se puede ejecutar manualmente.
-- [ ] Al menos 3 tipos de integraciones funcionan realmente (ej: Webhook -> IA Analyze -> Email).
-- [ ] Interfaz visual limpia.
-- [ ] Código modular y extensible.
+- [ ] TDD: tests escritos primero
+- [ ] Layered Architecture: Controller → Service → Repository → DTO
+- [ ] **Patrones GoF**: Strategy (IA), Command (nodos), Observer (ejecución)
+- [ ] **Eventos de dominio**: WorkflowCreated, ExecutionStarted, NodeCompleted
+- [ ] **Circuit Breaker** en integraciones externas
+- [ ] Migraciones Alembic
+- [ ] **Diagramas UML**: clases (GoF), secuencia, estado del workflow
+- [ ] Tests con Testcontainers
+- [ ] Interfaz visual funcional
+- [ ] GitFlow: ramas feature/*, develop, main
 
 ---
 
 ## 💼 Lo que demuestra al reclutador
 
-| Habilidad     | Evidencia                                                    |
-| ------------- | ------------------------------------------------------------ |
-| System Design | Arquitectura compleja de microservicios e IA                 |
-| GenAI Applied | Uso de LLMs para control lógico, no solo generación de texto |
-| Full-Stack    | React complejo (grafos) + Backend asíncrono robusto          |
-| Innovación    | Creación de una herramienta "No-Code" impulsada por IA       |
+| Habilidad              | Evidencia                                                    |
+| ---------------------- | ------------------------------------------------------------ |
+| **Patrones GoF**       | Strategy, Command, Observer aplicados de forma práctica      |
+| **UML avanzado**       | Diagramas de clases, secuencia y estado                      |
+| **Event-Driven**       | Arquitectura nativa de eventos con Celery listeners          |
+| **Circuit Breaker**    | Resiliencia en integraciones externas                        |
+| Layered Architecture   | Controller → Service → Repository → DTO                     |
+| System Design          | Arquitectura compleja de múltiples componentes               |
+| GenAI Applied          | LLMs para control lógico                                     |

@@ -1,6 +1,6 @@
 # 📱 Semana 20 — SnapTask
 
-> **App móvil de gestión de tareas con Flutter y sincronización en la nube**
+> **App móvil de gestión de tareas con Flutter, API First y backend Layered Architecture**
 
 | Campo              | Detalle                |
 | ------------------ | ---------------------- |
@@ -13,9 +13,9 @@
 
 ## 🎯 Descripción
 
-SnapTask es una aplicación móvil de gestión de tareas construida con **Flutter**, diseñada para funcionar en Android e iOS desde una sola base de código. Incluye un backend con FastAPI para sincronización en la nube, notificaciones push y categorización inteligente de tareas.
+SnapTask es una aplicación móvil de gestión de tareas construida con **Flutter**, diseñada para funcionar en Android e iOS desde una sola base de código. Incluye un backend con FastAPI para sincronización en la nube, notificaciones push y categorización de tareas.
 
-Este proyecto demuestra la capacidad de extender habilidades full-stack al desarrollo móvil, manteniendo código limpio y reutilizable con Dart y el ecosistema de Flutter.
+El backend aplica **Layered Architecture**, **API First** con contrato OpenAPI compartido entre mobile y backend, **TDD** en el backend, **Alembic** para migraciones, y **eventos de dominio** (`TaskSynced`, `TaskConflictResolved`) para desacoplar la lógica de sincronización.
 
 ---
 
@@ -27,102 +27,61 @@ Este proyecto demuestra la capacidad de extender habilidades full-stack al desar
 - [ ] Categorías personalizables con colores e íconos
 - [ ] Fechas límite con recordatorios locales
 - [ ] Estados: pendiente, en progreso, completada
-- [ ] Gestos de deslizamiento para acciones rápidas (completar, eliminar)
+- [ ] Gestos de deslizamiento para acciones rápidas
 
 ### Interfaz móvil nativa
 
 - [ ] Navegación fluida con GoRouter
 - [ ] Pantalla principal con lista de tareas agrupadas por fecha
-- [ ] Pantalla de detalle de tarea con edición inline
-- [ ] Dark mode / Light mode con toggle automático
+- [ ] Dark mode / Light mode
 - [ ] Animaciones suaves y transiciones Hero
 - [ ] Pull-to-refresh para sincronización
 
+### Backend (FastAPI — Layered Architecture)
+
+- [ ] Controller: TaskController, AuthController (endpoints REST)
+- [ ] Service: TaskService, SyncService, AuthService (lógica de negocio)
+- [ ] Repository: TaskRepository, UserRepository (PostgreSQL)
+- [ ] DTOs: Request/Response con Pydantic
+- [ ] Contrato OpenAPI compartido con mobile (API First)
+- [ ] Alembic para migraciones versionadas
+
+### Eventos de Dominio
+
+- [ ] `TaskSynced` — disparado tras sincronización exitosa
+- [ ] `TaskConflictResolved` — disparado al resolver conflicto de sync
+- [ ] `TaskCreatedRemote` — disparado al crear tarea desde mobile
+
 ### Sincronización en la nube
 
-- [ ] Backend FastAPI con endpoints REST
 - [ ] Autenticación con JWT (login/registro)
 - [ ] Sincronización bidireccional de tareas
-- [ ] Almacenamiento local con Hive/SharedPreferences (funciona offline)
+- [ ] Almacenamiento local con Hive (funciona offline)
 - [ ] Resolución de conflictos (última escritura gana)
 
 ### Notificaciones
 
-- [ ] Notificaciones push con Firebase Cloud Messaging (FCM)
-- [ ] Recordatorios programados para tareas con fecha límite usando flutter_local_notifications
+- [ ] Recordatorios programados con flutter_local_notifications
 - [ ] Badge de la app con conteo de tareas pendientes
 
 ---
 
 ## 🛠️ Stack técnico
 
-| Tecnología               | Propósito                                  |
-| ------------------------ | ------------------------------------------ |
-| **Flutter**              | Framework de desarrollo móvil              |
-| **Dart**                 | Lenguaje de programación unificado         |
-| **GoRouter**             | Navegación entre pantallas                 |
-| **Provider / Riverpod**  | Gestión del estado                         |
-| **Hive / SharedPreferences**| Almacenamiento local persistente        |
-| **FCM / Local Notifications**| Notificaciones push y locales          |
-| **FastAPI**              | Backend API REST                           |
-| **PostgreSQL**           | Base de datos del backend                  |
-| **JWT (python-jose)**    | Autenticación basada en tokens             |
-
----
-
-## 📁 Estructura del proyecto
-
-```text
-snaptask/
-├── mobile/                        # App Flutter
-│   ├── lib/                       # Código fuente Dart
-│   │   ├── screens/               # Pantallas principales
-│   │   │   ├── home/
-│   │   │   │   └── home_screen.dart   # Pantalla principal (lista tareas)
-│   │   │   ├── categories/
-│   │   │   │   └── categories_screen.dart # Gestión de categorías
-│   │   │   ├── settings/
-│   │   │   │   └── settings_screen.dart   # Configuración y perfil
-│   │   │   ├── task/
-│   │   │   │   └── task_detail_screen.dart# Detalle de tarea
-│   │   │   └── auth/
-│   │   │       ├── login_screen.dart      # Inicio de sesión
-│   │   │       └── register_screen.dart   # Registro
-│   │   ├── widgets/
-│   │   │   ├── task_card.dart         # Tarjeta de tarea con gestos
-│   │   │   ├── task_form.dart         # Formulario de tarea
-│   │   │   ├── category_badge.dart    # Badge de categoría
-│   │   │   └── empty_state.dart       # Estado vacío ilustrado
-│   │   ├── providers/
-│   │   │   ├── task_provider.dart     # Gestión de tareas
-│   │   │   ├── auth_provider.dart     # Manejo de sesión
-│   │   │   └── sync_provider.dart     # Lógica de sincronización
-│   │   ├── services/
-│   │   │   ├── api_service.dart       # Cliente HTTP (dio/http)
-│   │   │   ├── storage_service.dart   # Almacenamiento local (Hive)
-│   │   │   └── notification_service.dart# Config FCM/Locales
-│   │   ├── theme/
-│   │   │   └── app_theme.dart         # Paleta de colores (dark/light)
-│   │   ├── models/
-│   │   │   └── task_model.dart        # Modelos (clases de datos)
-│   │   └── main.dart                  # Punto de entrada de la app
-│   ├── pubspec.yaml                   # Dependencias de Flutter
-│   └── README.md
-├── backend/                       # API FastAPI
-│   ├── app/
-│   │   ├── main.py                # Entry point FastAPI
-│   │   ├── models.py              # Modelos SQLAlchemy
-│   │   ├── schemas.py             # Pydantic schemas
-│   │   ├── routes/
-│   │   │   ├── auth.py            # Endpoints de autenticación
-│   │   │   └── tasks.py           # Endpoints CRUD de tareas
-│   │   └── database.py            # Configuración de BD
-│   ├── requirements.txt
-│   └── Dockerfile
-├── docker-compose.yml             # Backend + PostgreSQL
-├── Makefile
-└── README.md
-```
+| Tecnología                    | Propósito                          |
+| ----------------------------- | ---------------------------------- |
+| **Flutter**                   | Framework móvil                    |
+| **Dart**                      | Lenguaje frontend                  |
+| **GoRouter**                  | Navegación                         |
+| **Provider / Riverpod**       | Gestión del estado                 |
+| **Hive**                      | Almacenamiento local               |
+| **FastAPI**                   | Backend (Layered Architecture)     |
+| **PostgreSQL**                | Base de datos                      |
+| **Alembic**                   | Migraciones de esquema BD          |
+| **Pydantic**                  | DTOs (Request/Response schemas)    |
+| **JWT**                       | Autenticación                      |
+| **pytest**                    | Testing backend (TDD)              |
+| **Testcontainers**            | Tests integración con PostgreSQL   |
 
 ---
 
@@ -130,64 +89,50 @@ snaptask/
 
 ### Sábado
 
-| Hora           | Actividad                                              |
-| -------------- | ------------------------------------------------------ |
-| 🌅 9:00-10:00  | Setup: Flutter, GoRouter, estructura del proyecto      |
-| 🌅 10:00-12:00 | Pantalla principal: lista de tareas + TaskCard         |
-| 🌞 12:00-13:00 | Backend FastAPI: modelos, auth JWT, CRUD tareas        |
-| 🌞 14:00-16:00 | Pantalla de detalle + formulario de tarea              |
-| 🌆 16:00-18:00 | Categorías, prioridades y gestos (Dismissible)         |
+| Hora           | Actividad                                                          |
+| -------------- | ------------------------------------------------------------------ |
+| 🌅 9:00-10:00  | Contrato OpenAPI (API First) compartido mobile ↔ backend           |
+| 🌅 10:00-11:00 | TDD: tests de integración del backend (sync, auth)                |
+| 🌅 11:00-12:00 | Alembic: migraciones + Layered Architecture backend               |
+| 🌞 12:00-13:00 | Flutter: pantalla principal + TaskCard                             |
+| 🌞 14:00-16:00 | Flutter: detalle + formulario + categorías                        |
+| 🌆 16:00-18:00 | Eventos: TaskSynced, TaskConflictResolved + Testcontainers        |
 
 ### Domingo
 
 | Hora           | Actividad                                           |
 | -------------- | --------------------------------------------------- |
-| 🌅 9:00-10:30  | Sincronización: providers de sync, almacenamiento Hive |
-| 🌅 10:30-12:00 | Dark mode + animaciones Hero y explícitas           |
-| 🌞 13:00-14:30 | Notificaciones push + recordatorios programados     |
-| 🌞 14:30-16:00 | Tests (flutter_test para widgets y lógica)          |
-| 🌆 16:00-17:00 | README con capturas de pantalla y video demo        |
+| 🌅 9:00-10:30  | Sincronización: providers de sync + Hive            |
+| 🌅 10:30-12:00 | Dark mode + animaciones Hero                        |
+| 🌞 13:00-14:30 | Notificaciones locales + recordatorios              |
+| 🌞 14:30-16:00 | Tests (flutter_test + backend TDD completo)         |
+| 🌆 16:00-17:00 | README con capturas de pantalla y diagramas UML     |
 
 ---
 
 ## ✅ Definición de "hecho"
 
-- [ ] CRUD completo de tareas funcionando en la app móvil
-- [ ] Navegación fluida entre pantallas (GoRouter)
-- [ ] Sincronización con backend FastAPI
-- [ ] Modo offline con Hive / SharedPreferences
-- [ ] Dark mode y Light mode dinámico
-- [ ] Transiciones cuidadas (animaciones en Flutter)
-- [ ] Notificaciones locales para recordatorios
-- [ ] Tests de widgets clave y lógica de negocio
-- [ ] README con capturas de pantalla en ambos temas
+- [ ] API First: contrato OpenAPI compartido mobile ↔ backend
+- [ ] TDD: tests del backend escritos primero
+- [ ] Layered Architecture: Controller → Service → Repository → DTO
+- [ ] Eventos de dominio: TaskSynced, TaskConflictResolved
+- [ ] Migraciones versionadas con Alembic
+- [ ] Tests de integración con Testcontainers
+- [ ] CRUD completo de tareas en la app móvil
+- [ ] Modo offline con Hive
 - [ ] Docker Compose para el backend
-
----
-
-## 🧠 Conceptos de Flutter demostrados
-
-| Concepto                     | Aplicación en el proyecto                     |
-| ---------------------------- | --------------------------------------------- |
-| Widgets Funcionales          | Árbol de widgets modular en toda la app       |
-| Gestión de estado            | Patrón Provider o Riverpod para el negocio    |
-| Enrutamiento                 | Navegación declarativa con GoRouter           |
-| Gestos interactivos          | Widget Dismissible para borrado/completado    |
-| Animaciones de UI            | Composiciones de Hero, AnimatedContainer, etc.|
-| Almacenamiento local         | SQLite / Hive para base de datos local        |
-| Tipado estricto              | Dart puro y null-safety                       |
-| Multihilo (Asincronía)       | Futures y Streams en la comunicación con APIs |
-| Plugins nativos              | Manejo de hardware a nivel de notificaciones  |
+- [ ] GitFlow: ramas feature/*, develop, main
 
 ---
 
 ## 💼 Lo que demuestra al reclutador
 
-| Habilidad                  | Evidencia                                           |
-| -------------------------- | --------------------------------------------------- |
-| Desarrollo móvil           | App compilada funcional en Android/iOS (Flutter)    |
-| Entendimiento UI/UX        | Experiencia responsiva y fluida nativa              |
-| Full-stack mobile          | App móvil + Backend FastAPI + PostgreSQL            |
-| Tipado estricto            | Uso idiomático de Dart y Python (Type hints)        |
-| Arquitectura escalable     | Separación limpia: UI, Provider, Services, Models   |
-| Modo Offline-first         | Funciona sin red y sincroniza cuando es posible     |
+| Habilidad              | Evidencia                                  |
+| ---------------------- | ------------------------------------------ |
+| Layered Architecture   | Controller → Service → Repository → DTO    |
+| API First              | Contrato OpenAPI compartido mobile ↔ backend|
+| TDD                    | Tests escritos primero en backend           |
+| Event-Driven           | TaskSynced, TaskConflictResolved eventos    |
+| Migraciones BD         | Alembic versionado                          |
+| Full-stack mobile      | Flutter + FastAPI + PostgreSQL              |
+| Modo Offline-first     | Funciona sin red y sincroniza cuando puede  |

@@ -1,6 +1,6 @@
 # 🖼️ Semana 24 — PortfolioOS
 
-> **El Portafolio definitivo: Interactivo, visual y técnicamente impecable**
+> **El Portafolio definitivo: Interactivo, visual y optimizado para Backend Senior**
 
 | Campo              | Detalle                  |
 | ------------------ | ------------------------ |
@@ -13,7 +13,9 @@
 
 ## 🎯 Descripción
 
-PortfolioOS no es una simple página estática. Es una aplicación web progresiva (PWA) diseñada para mostrar los 23 proyectos anteriores de manera interactiva. Puede tener una interfaz inspirada en un sistema operativo (ventanas, dock, terminal) o un diseño scrollytelling inmersivo. El objetivo es que el propio portafolio sea el proyecto #24 y demuestre dominio frontend y atención al detalle.
+PortfolioOS no es una simple página estática. Es una aplicación web progresiva (PWA) diseñada para mostrar los 23 proyectos anteriores de manera interactiva. Puede tener una interfaz inspirada en un sistema operativo (ventanas, dock, terminal) o un diseño scrollytelling inmersivo.
+
+El SEO está optimizado para keywords de **"Backend Senior Developer"**, **"FastAPI"**, **"Layered Architecture"**, **"TDD"**, **"Event-Driven Architecture"**, **"Rust Axum"** — las competencias clave del portafolio alineadas con la propuesta laboral.
 
 ---
 
@@ -21,21 +23,27 @@ PortfolioOS no es una simple página estática. Es una aplicación web progresiv
 
 ### Experiencia de Usuario
 
-- [ ] **Showcase Interactivo**: Cada proyecto tiene su "tarjeta" o "ventana" con demo (GIF/Video), stack tecnológico y link al repo.
-- [ ] **Terminal Mode**: Un modo para "hackers" donde pueden navegar el portafolio vía comandos CLI en la web (`ls projects`, `cat about.md`).
-- [ ] **Performance First**: 100/100 en Lighthouse, carga instantánea, optimización de imágenes.
+- [ ] **Showcase Interactivo**: Cada proyecto con demo (GIF/Video), stack y link al repo
+- [ ] **Terminal Mode**: Navegar el portafolio via CLI web (`ls projects`, `cat about.md`)
+- [ ] **Performance First**: 100/100 en Lighthouse
 
 ### Contenido Dinámico
 
-- [ ] Fetch automático de estadísticas de GitHub (estrellas, commits) para cada proyecto.
-- [ ] Blog integrado (Markdown) para los "Write-ups" de cada semana.
-- [ ] Formulario de contacto funcional (integrado con Email/Slack).
+- [ ] Fetch automático de estadísticas de GitHub
+- [ ] Blog integrado (Markdown) para write-ups de cada semana
+- [ ] Formulario de contacto funcional
+
+### SEO Optimizado para Backend Senior
+
+- [ ] Keywords: "Backend Senior", "FastAPI", "Python", "Rust Axum"
+- [ ] Keywords: "Layered Architecture", "TDD", "Event-Driven", "Microservicios"
+- [ ] Open Graph images por proyecto
+- [ ] Meta descriptions con skills técnicos
 
 ### Ingeniería
 
-- [ ] CI/CD para deploy automático en Vercel/Netlify.
-- [ ] SEO optimizado para "Backend Developer", "Python Engineer".
-- [ ] Analytics respetuosos con la privacidad.
+- [ ] CI/CD para deploy automático en Vercel/Netlify
+- [ ] Analytics respetuosos con la privacidad
 
 ---
 
@@ -57,31 +65,32 @@ PortfolioOS no es una simple página estática. Es una aplicación web progresiv
 
 | Hora           | Actividad                                                             |
 | -------------- | --------------------------------------------------------------------- |
-| 🌅 9:00-10:00  | Diseño en Figma (o sketch rápido) y setup de Next.js.                 |
-| 🌅 10:00-12:00 | Componentes Core: Layout, Typography, Theme Toggle (Dark/Light).      |
-| 🌞 12:00-14:00 | Data Layer: Estructura JSON de los proyectos y fetcher de GitHub API. |
-| 🌞 14:00-17:00 | Desarrollo de la Grid de Proyectos y Tarjetas detalladas.             |
-| 🌆 17:00-18:00 | Implementación del "Terminal Mode" (Easter egg).                      |
+| 🌅 9:00-10:00  | Diseño en Figma (o sketch rápido) y setup de Next.js                  |
+| 🌅 10:00-12:00 | Componentes Core: Layout, Typography, Theme Toggle                    |
+| 🌞 12:00-14:00 | Data Layer: JSON de proyectos + fetcher de GitHub API                 |
+| 🌞 14:00-17:00 | Grid de Proyectos + Tarjetas detalladas con skills tags              |
+| 🌆 17:00-18:00 | Terminal Mode (Easter egg)                                            |
 
 ### Domingo
 
 | Hora           | Actividad                                                        |
 | -------------- | ---------------------------------------------------------------- |
-| 🌅 9:00-11:00  | Página de detalle de proyecto (Template MDX).                    |
-| 🌅 11:00-13:00 | Animaciones con Framer Motion (Page transitions, hover effects). |
-| 🌞 13:00-14:30 | Optimización SEO, Meta tags, Open Graph images.                  |
-| 🌞 14:30-16:00 | Testing en móviles, Lighthouse audit y correcciones.             |
-| 🌆 16:00-17:00 | Deploy final y verificación de dominio.                          |
+| 🌅 9:00-11:00  | Página de detalle de proyecto (Template MDX)                     |
+| 🌅 11:00-13:00 | Animaciones con Framer Motion                                    |
+| 🌞 13:00-14:30 | SEO: Meta tags "Backend Senior", Open Graph                     |
+| 🌞 14:30-16:00 | Testing en móviles, Lighthouse audit y correcciones              |
+| 🌆 16:00-17:00 | Deploy final y verificación                                      |
 
 ---
 
 ## ✅ Definición de "hecho"
 
-- [ ] Sitio web desplegado y accesible públicamente.
-- [ ] Todos los proyectos anteriores están listados con info correcta.
-- [ ] Score Lighthouse > 95 en todas las categorías.
-- [ ] Totalmente responsive y accesible.
-- [ ] El modo terminal funciona.
+- [ ] Sitio web desplegado y accesible públicamente
+- [ ] Todos los proyectos listados con skills tags (TDD, Layered Arch, etc.)
+- [ ] SEO optimizado para "Backend Senior Developer"
+- [ ] Score Lighthouse > 95
+- [ ] Responsive y accesible
+- [ ] Terminal mode funcional
 
 ---
 
@@ -90,6 +99,6 @@ PortfolioOS no es una simple página estática. Es una aplicación web progresiv
 | Habilidad           | Evidencia                                             |
 | ------------------- | ----------------------------------------------------- |
 | Frontend Mastery    | React moderno, animaciones, performance               |
-| Creatividad         | Diseño único, no una plantilla genérica               |
 | Comunicación        | Capacidad de sintetizar y vender el trabajo realizado |
+| SEO                 | Optimizado para skills de la propuesta laboral        |
 | Atención al detalle | Micro-interacciones, pulido visual                    |

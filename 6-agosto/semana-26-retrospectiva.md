@@ -1,6 +1,6 @@
 # 🏁 Semana 26 — Retrospectiva Final
 
-> **Cierre, análisis de métricas, documentación final y preparación para entrevistas**
+> **Cierre, métricas de TDD, documentación UML consolidada y preparación para entrevistas**
 
 | Campo              | Detalle              |
 | ------------------ | -------------------- |
@@ -13,7 +13,9 @@
 
 ## 🎯 Descripción
 
-El viaje de 6 meses ha concluido. Esta última "semana" se dedica a consolidar todo el trabajo. No se escribe código nuevo de producto, sino que se audita la calidad total del portafolio, se generan métricas finales (líneas de código, commits, features) y se prepara el "discurso de venta" para las entrevistas. Es el momento de asegurar que todo brille.
+El viaje de 6 meses ha concluido. Esta última "semana" se dedica a consolidar todo el trabajo. Se audita la calidad total del portafolio, se generan métricas finales, y se prepara el "discurso de venta" para las entrevistas.
+
+**Enfoque especial** en generar **diagramas UML resumen** del portafolio, compilar **métricas de TDD** (cobertura, ratio tests/código), demostrar el uso de **GitFlow** con historial de branches, y preparar respuestas sobre **Layered Architecture, Event-Driven, TDD, Circuit Breaker** para entrevistas técnicas.
 
 ---
 
@@ -21,31 +23,50 @@ El viaje de 6 meses ha concluido. Esta última "semana" se dedica a consolidar t
 
 ### 1. Auditoría de Calidad
 
-- Recorrer todos los repositorios.
-- Verificar que todos los README tienen badges verdes (CI passing).
-- Asegurar que las demos/live links siguen activos.
-- Unificar estilos de documentación.
+- Recorrer todos los repositorios
+- Verificar que todos los README tienen badges verdes (CI passing)
+- Asegurar que los diagramas UML están completos
+- Verificar Layered Architecture en todos los proyectos
+- Unificar estilos de documentación
 
-### 2. Generación de Métricas
+### 2. Métricas de TDD y Calidad
 
-- Script para contar commits totales en los 6 meses.
-- Conteo de horas estimadas vs reales.
-- Tecnologías más usadas (generar gráfico).
+- Script para calcular **cobertura de tests** agregada (todos los proyectos)
+- Ratio tests de integración vs unitarios (**Testing Trophy**)
+- Conteo de commits totales en los 6 meses
+- Generar gráfico de tecnologías más usadas
+- Listar patrones GoF implementados por proyecto
 
-### 3. Preparación de Entrevista
+### 3. Diagramas UML Consolidados
 
-- Redactar respuestas a preguntas comunes usando ejemplos de los proyectos:
-  - _"Cuéntame de un desafío técnico difícil..."_ -> Citar el Gateway o el Engine de Automatización.
-  - _"Cómo manejas deuda técnica..."_ -> Citar refactorizaciones hechas.
-- Preparar diapositivas o esquema para presentar el portafolio en 5 minutos.
+- **Diagrama de contexto** del portafolio completo (relación entre proyectos)
+- **Diagrama de clases consolidado** de patrones GoF usados
+- **Diagrama de componentes** mostrando las arquitecturas recurrentes
+
+### 4. Demo de GitFlow
+
+- Captura del historial de branches (gráfico git)
+- Documentar la convención de commits usada
+- Mostrar trazabilidad commits → tickets
+
+### 5. Preparación de Entrevista
+
+- Redactar respuestas a preguntas técnicas usando ejemplos de los proyectos:
+  - _"Explícame tu experiencia con Layered Architecture"_ → Citar ProjectHub
+  - _"¿Cómo manejas resiliencia en microservicios?"_ → Citar GateKeeper/AxumMicro
+  - _"¿Experiencia con Event-Driven Architecture?"_ → Citar NotifyHub/LogStream
+  - _"¿Cómo aplicas TDD?"_ → Citar Testing Trophy en ProjectHub
+  - _"¿Experiencia con Kafka/RabbitMQ?"_ → Citar LogStream y NotifyHub
+- Preparar diapositivas para presentar el portafolio en 5 minutos
 
 ---
 
 ## 🛠️ Entregables
 
-- **`FINAL_REPORT.md`**: El documento maestro que resume los 6 meses.
-- **Video Demo Reel**: Un video de 2-3 minutos compilando los mejores momentos de las interfaces y CLIs creadas.
-- **CV Actualizado**: Incorporando las nuevas habilidades y proyectos destacados.
+- **`FINAL_REPORT.md`**: Documento maestro con métricas y resumen
+- **Diagramas UML consolidados**: Contexto, clases GoF, componentes
+- **Video Demo Reel**: 2-3 minutos compilando los mejores momentos
+- **CV Actualizado**: Incorporando las nuevas habilidades, enfocado en Backend Senior
 
 ---
 
@@ -55,36 +76,42 @@ El viaje de 6 meses ha concluido. Esta última "semana" se dedica a consolidar t
 
 | Hora           | Actividad                                                                                      |
 | -------------- | ---------------------------------------------------------------------------------------------- |
-| 🌅 9:00-11:00  | **Limpieza**: Recorrido link por link del [README principal](../README.md) arreglando roturas. |
-| 🌅 11:00-13:00 | **Métricas**: Correr scripts de análisis sobre los repos (loc, commits).                       |
-| 🌞 13:00-15:00 | **CV Update**: Agregar sección "Intensive Portfolio" con los hits.                             |
-| 🌞 15:00-18:00 | **Demo Reel**: Grabar/Editar clips de los proyectos visuales (Dashboards, CLIs).               |
+| 🌅 9:00-11:00  | Limpieza: verificar enlaces, UML, Layered Arch en todos los repos                             |
+| 🌅 11:00-13:00 | Métricas: cobertura TDD, Testing Trophy ratio, commits, GitFlow demo                          |
+| 🌞 13:00-15:00 | Diagramas UML consolidados (contexto, GoF, componentes)                                       |
+| 🌞 15:00-18:00 | Demo Reel: grabar/editar clips + CV Update con skills de la propuesta                         |
 
 ### Domingo
 
 | Hora           | Actividad                                                                                  |
 | -------------- | ------------------------------------------------------------------------------------------ |
-| 🌅 9:00-11:00  | **Escritura**: Redactar el artículo "Lo que aprendí construyendo 26 proyectos en 6 meses". |
-| 🌅 11:00-13:00 | **Simulacro**: Practicar la presentación del portafolio en voz alta.                       |
-| 🌞 13:00-14:00 | **Backup**: Asegurar que todo está pusheado y respaldado.                                  |
-| 🌞 14:00-16:00 | **Celebración**: Reflexión personal y cierre.                                              |
+| 🌅 9:00-11:00  | Redactar respuestas para entrevistas técnicas (Layered Arch, TDD, Event-Driven, CB)        |
+| 🌅 11:00-13:00 | Simulacro: presentación del portafolio en voz alta                                         |
+| 🌞 13:00-14:00 | Backup: asegurar que todo está pusheado                                                    |
+| 🌞 14:00-16:00 | Artículo: "Lo que aprendí construyendo 26 proyectos en 6 meses"                           |
 
 ---
 
 ## ✅ Definición de "hecho"
 
-- [ ] README.md raíz perfecto y actualizado.
-- [ ] CV actualizado con los proyectos.
-- [ ] Artículo de retrospectiva publicado (Blog/LinkedIn/Repo).
-- [ ] Todos los repositorios públicos y limpios.
+- [ ] README.md raíz perfecto y actualizado
+- [ ] Diagramas UML consolidados del portafolio
+- [ ] Métricas de TDD y Testing Trophy documentadas
+- [ ] Demo de GitFlow con gráfico de branches
+- [ ] CV actualizado enfocado en Backend Senior
+- [ ] Respuestas preparadas para entrevista técnica
+- [ ] Todos los repositorios públicos y limpios
+- [ ] Artículo de retrospectiva publicado
 
 ---
 
 ## 💼 Lo que demuestra al reclutador
 
-| Habilidad       | Evidencia                                           |
-| --------------- | --------------------------------------------------- |
-| Comunicación    | Capacidad de cerrar ciclos y presentar resultados   |
-| Profesionalismo | Entrega pulida, sin cabos sueltos                   |
-| Análisis        | Capacidad de autocrítica y mejora continua          |
-| Perseverancia   | Evidencia tangible de 6 meses de esfuerzo sostenido |
+| Habilidad              | Evidencia                                           |
+| ---------------------- | --------------------------------------------------- |
+| **Comunicación**       | Capacidad de cerrar ciclos y presentar resultados   |
+| **Documentación UML**  | Diagramas consolidados del portafolio               |
+| **TDD / Métricas**     | Datos concretos de cobertura y Testing Trophy       |
+| **GitFlow**            | Historial visual de branches y trazabilidad         |
+| Profesionalismo        | Entrega pulida, sin cabos sueltos                   |
+| Perseverancia          | 6 meses de esfuerzo sostenido                       |
