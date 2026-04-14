@@ -4,30 +4,24 @@
 
 ## 🎯 Objetivo del mes
 
-Dominar la ingeniería de datos, el aislamiento y los patrones comerciales de un Software-as-a-Service (SaaS) completo. Enseña cómo orquestar transferencias de datos seguras, manejar múltiples clientes (multi-tenant) sobre la misma infra y gestionar suscripciones con pasarelas de pago.
+Dominar los patrones de infraestructura SaaS: aislamiento de datos entre clientes con Row-Level Security, control de acceso basado en plan de suscripción (cuotas), ingesta masiva de datos via ETL y prevención de race conditions con distributed locks en Redis.
 
 ---
 
 ## 📅 Proyectos del mes
 
 ### 🏗️ Proyecto Principal: [SaaSForge](./proyecto-saasforge.md)
-Plataforma SaaS multi-tenant lista para producción con aislamiento RLS nativo en PostgreSQL. Ofrece pipelines ETL robustos, integración de billing de Stripe y generación dinámica de visualizaciones y analíticas usando Plotly.
+Plataforma SaaS multi-tenant con aislamiento RLS en PostgreSQL. Reserva concurrente de recursos con Distributed Lock Redis (prevención de overbooking), cuotas de uso por plan con sliding window, pipelines ETL validados con Pydantic/Pandas y observabilidad con OpenTelemetry.
 
-- **Tecnologías**: FastAPI, PostgreSQL (RLS), Stripe API, Webhooks, Pandas, Plotly, SQLite
-- **Estado**: ⬜ Pendiente
-
-### 🤖 AI Track: [DocuRAG](./mes-02-docurag.md)
-Pipeline RAG (Retrieval-Augmented Generation) avanzado sobre documentos utilizando estrategias complejas de chunking, evaluación estricta con RAGAS e implementando Semantic Re-ranking.
-
-- **Tecnologías**: RAGAS, pgvector, Cohere
+- **Tecnologías**: FastAPI, PostgreSQL (RLS), Redis (SETNX distributed lock), Pandas, SQLAlchemy async, OpenTelemetry
 - **Estado**: ⬜ Pendiente
 
 ---
 
 ## 🧠 Habilidades que se desarrollan
 
-- Diseño Multi-tenant con PostgreSQL RLS (Row-Level Security).
-- Creación de procesos ETL (Extract, Transform, Load) seguros mediante Python Pandas.
-- Integración robusta de pagos a través de Webhooks de Stripe e idempotencia.
-- Visualización de grandes conjuntos de datos de forma dinámica consumible vía API.
-- Evaluación programática de sistemas GenAI con métricas científicas.
+- Diseño Multi-tenant con PostgreSQL RLS (Row-Level Security) — aislamiento a nivel de base de datos.
+- Distributed Locks con Redis SETNX: prevención de race conditions bajo alta concurrencia.
+- Rate limiting con sliding window (sorted sets Redis) — cuotas por plan de suscripción.
+- Creación de procesos ETL validados con Pydantic v2 y Pandas — rechazando datos inválidos.
+- Observabilidad con OpenTelemetry: trazas por request, spans por query SQL lenta.

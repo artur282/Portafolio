@@ -4,9 +4,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Duración-6_meses-blue?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Proyectos-6_Grandes_Proyectos-green?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/AI_Track-6_Proyectos_Mensuales-red?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Stack-Python_|_Rust_|_LLMs_|_React_|_DevOps-purple?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Proyectos-6_Sistemas_de_Producci%C3%B3n-green?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Stack-Python_|_Rust_|_LLMs_|_Kafka_|_gRPC-purple?style=for-the-badge"/>
 </p>
 
 ---
@@ -45,17 +44,13 @@ Construir un portafolio de **máxima escalabilidad e impacto B2B**. En lugar de 
 ABR ──────── MAY ──────── JUN ──────── JUL ──────── AGO ──────── SEP
   │            │            │            │            │            │
   ▼            ▼            ▼            ▼            ▼            ▼
-🤖 IA/ML    📊 Datos &  ☁️ DevOps     🔗 Full     🏆 Integración   🦀 Alta
-Knowledge   SaaS        & Microserv. Stack       AutoPlatform    Performance
-Forge       Forge       Gate         Sync        (Capstone)      RustForge
+🤖 RAG/MCP  📊 SaaS+     ☁️ API GW    🚗 IoT       🏆 Automation  🎯 Vector
+Knowledge   Booking      MicroGate   Stream       AutoPlatform   Search
+Forge       Forge        Polyglot    (Rust+Kafka) (Capstone)     VectoRust
   │            │            │            │            │            │
-  ├─ Python    ├─ RLS       ├─ Rust+Py   ├─ React    ├─ Zapier-like  ├─ Axum
-  ├─ VectorDB  ├─ ETL       ├─ API GW    ├─ WebSock  ├─ DevOps+UI    ├─ Async
-  └─ MCP SDK   └─ Stripe    └─ gRPC      └─ Móvil    └─ Portfolio    └─ SQLx
-
-🤖 AI TRACK PARALELO
-  │            │            │            │            │            │
-  └─PromptLab └─ DocuRAG   └─ EvalForge └─ AgentFlow └─ GuardAI   └─ TailorAI
+  ├─ Python    ├─ RLS+Redis ├─ Rust+Py   ├─ Rust      ├─ LCEL chain  ├─ Rust SIMD
+  ├─ pgvector  ├─ Redlock   ├─ gRPC      ├─ Kafka     ├─ Next.js ISR  ├─ gRPC tonic
+  └─ MCP SDK   └─ Redis     └─ Distroless └─ Timescale └─ Portfolio   └─ Benchmarks
 ```
 
 ---
@@ -65,74 +60,56 @@ Forge       Forge       Gate         Sync        (Capstone)      RustForge
 ### [1. Abril — KnowledgeForge (IA/ML & GenAI)](./1-abril/)
 Plataforma empresarial de gestión de conocimiento. Ingesta documentos, los indexa con Elasticsearch+pgvector, ofrece RAG avanzado, chatbot, y expone su base vía servidor MCP nativo.
 
-| Track | Proyecto Core/AI | Stack |
-| --- | --- | --- |
-| 🏗️ MAIN | [KnowledgeForge](./1-abril/proyecto-knowledgeforge.md) | FastAPI, pgvector, LangChain, Elasticsearch, MCP |
-| 🤖 AI | [PromptLab](./1-abril/mes-01-promptlab.md) | OpenAI, Anthropic, Evaluación Comparativa |
+**Stack:** FastAPI · pgvector · LangChain · Elasticsearch · MCP SDK
 
 ---
 
 ### [2. Mayo — SaaSForge (SaaS Patterns & Data)](./2-mayo/)
-API Multitenant pesada. Aísla transacciones implementando Row-Level Security PostgreSQL. Conecta un ETL estructurado y levanta portales de cobro integrados a Stripe asíncronamente con visualización de datos dinámica.
+Plataforma SaaS multi-tenant. Aislamiento de datos por Row-Level Security (RLS) en PostgreSQL, reserva concurrente de recursos con Distributed Lock (Redis SETNX) que previene overbooking bajo alta concurrencia, cuotas de uso por plan con sliding window, y pipeline ETL validado con Pandas.
 
-| Track | Proyecto Core/AI | Stack |
-| --- | --- | --- |
-| 🏗️ MAIN | [SaaSForge](./2-mayo/proyecto-saasforge.md) | PostgreSQL RLS, Stripe, Pandas, ETL, FastAPI |
-| 🤖 AI | [DocuRAG](./2-mayo/mes-02-docurag.md) | Cohere Rerank, Advanced Chunking, RAGAS Metrics |
+**Stack:** PostgreSQL RLS · Redis SETNX · Pandas · FastAPI · OpenTelemetry
 
 ---
 
 ### [3. Junio — MicroGate (Cloud & Microservices)](./3-junio/)
 Patrones avanzados arquitectónicos "Polyglot". API Gateway en Python protege, autentica y divide cargas a un microservicio escrito absolutamente en Rust (Axum / Distroless). Comunicación inter-servicio super-veloz (gRPC/ProtoBuf). Automatización 100% CI/CD.
 
-| Track | Proyecto Core/AI | Stack |
-| --- | --- | --- |
-| 🏗️ MAIN | [MicroGate](./3-junio/proyecto-microgate.md) | Rust/Axum, CI/CD, gRPC, Protobuf, Multi-stage Docker |
-| 🤖 AI | [EvalForge](./3-junio/mes-03-evalforge.md) | Langfuse Observability, Grafana, A/B Estadístico |
+**Stack:** Rust/Axum · FastAPI · gRPC/Protobuf · Redis · Distroless Docker · GitHub Actions
 
 ---
 
-### [4. Julio — TeamSync (Full-Stack Integración)](./4-julio/)
-Sistema colaborativo integral. Sincroniza tableros de gestión, emitiendo notificaciones en tiempo real al mobile app y la vista dashboard. Conecta brokers de colas (RabbitMQ+Celery) para procesar todo el fondo de forma distribuida de alto nivel. 
+### [4. Julio — IoTStream (IoT & Real-Time Data Engineering)](./4-julio/)
+Plataforma de telemetría vehicular. Rust/Axum ingesta miles de eventos/seg desde sensores, Kafka garantiza exactly-once delivery con 6 particiones, TimescaleDB persiste con continuous aggregates automáticos y compresión nativa, FastAPI expone analytics predictivos de mantenimiento preventivo vehicular.
 
-| Track | Proyecto Core/AI | Stack |
-| --- | --- | --- |
-| 🏗️ MAIN | [TeamSync](./4-julio/proyecto-teamsync.md) | React, FastAPI, Flutter, RabbitMQ, WebSockets |
-| 🤖 AI | [AgentFlow](./4-julio/mes-04-agentflow.md) | Agente Reactivo Múltiple, Function Calling, Grafos LangGraph |
+**Stack:** Rust/Axum · rdkafka · Apache Kafka · TimescaleDB · FastAPI · Grafana
 
 ---
 
 ### [5. Agosto — AutoPlatform (Capstone V1)](./5-agosto/)
 El primer pico. Hub de flujo de automatizaciones dirigidos con IA (Strategy pattern engine). Levantando adicionalmente el despliegue del código abierto, Marketplace APIs auto-generado y publicando en línea el Portfolio consolidado estático visualizando todos los retos.
 
-| Track | Proyecto Core/AI | Stack |
-| --- | --- | --- |
-| 🏗️ MAIN | [AutoPlatform](./5-agosto/proyecto-autoplatform.md) | Vercel, Next/React, IA Workflows, OSS |
-| 🤖 AI | [GuardAI](./5-agosto/mes-05-guardai.md) | Seguridad LLM Presidio, NeMo, OWASP Prompt Injection |
+**Stack:** Next.js 15 · FastAPI · LangChain LCEL · GoF Strategy · Vercel
 
 ---
 
-### [6. Septiembre — RustForge (Rust & Performance)](./6-septiembre/)
-El cierre total en low-level safe backend. Re-creación nativa y super concurrente de conceptos API usando 100% Rust. Manejo de peticiones asíncronas seguras anti data-races. Interfaces TUIs directas por CLI. Carga en memorias diminutas hiper-optimizadas.
+### [6. Septiembre — VectoRust (Semantic Search & High-Performance Rust)](./6-septiembre/)
+Motor de búsqueda vectorial semántica construido desde cero en Rust con SIMD. Expuesto vía gRPC (tonic). Python/FastAPI orquesta la extracción de embeddings (OpenAI) y el enriquecimiento de resultados. Benchmark documentado FLAT-SIMD vs pgvector HNSW con ADR de tradeoffs. Dominio: recomendaciones de e-commerce (500K productos).
 
-| Track | Proyecto Core/AI | Stack |
-| --- | --- | --- |
-| 🏗️ MAIN | [RustForge](./6-septiembre/proyecto-rustforge.md) | Rust, Axum, Tokio, SQLx Compile check, Ratatui |
-| 🤖 AI | [TailorAI](./6-septiembre/mes-06-tailorai.md) | Capstone Agent, E2E Pipelines, Azure Deploy, Multi-Models |
+**Stack:** Rust SIMD · tonic gRPC · FastAPI · pgvector · OpenAI Embeddings
 
 ---
 
 ## 🛠️ Stack tecnológico
 
 ```text
-Backend           IA/ML Track        DevOps & Cloud      Frontend & Integrations
-─────────         ───────────        ─────────┴────      ───────────────────────
-Python 3.11+      LangChain/Graph    Docker              React, TailwindCSS
-FastAPI           MCP SDK            GitHub Actions      Next.js, Vercel
-PostgreSQL (RLS)  RAGAS Metrics      GitFlow Branch      WebSockets Async
-Rust 🦀 (Axum)    Langfuse Monitor   Linux/Bash          RabbitMQ / Celery
-gRPC / Protobuf   Presidio PII       Prometheus Monit    Flutter 📱 / Dart
-Elasticsearch     OpenAI / VectorDB  Distroless Build    Stripe Billing SaaS
+Backend           IA/ML Track        DevOps & Cloud      Distributed Systems
+─────────         ───────────        ───────────      ───────────────────
+Python 3.11+      LangChain/Graph    Docker              Redis SETNX Locks
+FastAPI           MCP SDK            GitHub Actions      Kafka (exactly-once)
+PostgreSQL (RLS)  RAGAS Metrics      GitFlow Branch      TimescaleDB
+Rust 🦀 (Axum)    Langfuse Monitor   Linux/Bash          gRPC / tonic
+gRPC / Protobuf   Presidio PII       Prometheus Monit    Dist. Locking
+Elasticsearch     OpenAI / VectorDB  Distroless Build    OpenTelemetry
 ```
 
 ---
@@ -157,15 +134,15 @@ Cada macro-proyecto sigue estructura modular corporativa estandarizada:
 
 ## 📊 Progreso Mensual Consolidado
 
-| Mes | Proyecto Macro | Estado |
-| --- | --- | --- |
-| 🧠 Abril | KnowledgeForge | ⬜ Pendiente |
-| 📊 Mayo | SaaSForge | ⬜ Pendiente |
-| ☁️ Junio | MicroGate | ⬜ Pendiente |
-| 🔗 Julio | TeamSync | ⬜ Pendiente |
-| 🏆 Agosto | AutoPlatform | ⬜ Pendiente |
-| 🦀 Septiembre | RustForge | ⬜ Pendiente |
-| **Total** | **6 + 6 Proyectos Base**| **0%** |
+| Mes | Proyecto Macro | Stack clave | Estado |
+| --- | --- | --- | --- |
+| 🤖 Abril | KnowledgeForge | FastAPI · pgvector · LangChain · MCP | ⬜ Pendiente |
+| 📊 Mayo | SaaSForge | PostgreSQL RLS · Redis SETNX · Pandas | ⬜ Pendiente |
+| ☁️ Junio | MicroGate | Rust Axum · FastAPI · gRPC · Distroless | ⬜ Pendiente |
+| 🚗 Julio | IoTStream | Rust · Kafka · TimescaleDB · FastAPI | ⬜ Pendiente |
+| 🏆 Agosto | AutoPlatform | Next.js ISR · LangChain · GoF Strategy | ⬜ Pendiente |
+| 🎯 Septiembre | VectoRust | Rust SIMD · gRPC tonic · pgvector · OpenAI | ⬜ Pendiente |
+| **Total** | **6 Proyectos** | **Python · Rust · LLMs · Kafka · gRPC** | **0%** |
 
 ---
 

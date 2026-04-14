@@ -16,12 +16,6 @@ Un gateway API resiliente en Python acoplado a un microservicio crítico de alto
 - **Tecnologías**: Python/FastAPI, Rust/Axum, gRPC/Protobuf, Redis, JWT, GitHub Actions, Docker Distroless
 - **Estado**: ⬜ Pendiente
 
-### 🤖 AI Track: [EvalForge](./mes-03-evalforge.md)
-Framework de evaluación y observabilidad de Inteligencia Artificial que implementa A/B testing para prompts y monitoreo intensivo a través de Langfuse.
-
-- **Tecnologías**: Langfuse, RAGAS, Grafana
-- **Estado**: ⬜ Pendiente
-
 ---
 
 ## 🧠 Habilidades que se desarrollan

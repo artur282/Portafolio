@@ -16,12 +16,6 @@ Plataforma enterprise de gestión de conocimiento. Ingesta documentos, los index
 - **Tecnologías**: FastAPI, PostgreSQL, pgvector, LangChain, OpenAI, MCP SDK, Elasticsearch
 - **Estado**: ⬜ Pendiente
 
-### 🤖 AI Track: [PromptLab](./mes-01-promptlab.md)
-Sistema de catálogo y versionado de prompts con evaluación comparativa entre múltiples modelos LLM para cimentar las bases del Prompt Engineering.
-
-- **Tecnologías**: OpenAI, Anthropic, Langfuse
-- **Estado**: ⬜ Pendiente
-
 ---
 
 ## 🧠 Habilidades que se desarrollan

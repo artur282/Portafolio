@@ -1,33 +1,27 @@
-# 🦀 Septiembre — Rust & High-Performance
+# 🎯 Septiembre — Rust & Semantic Search
 
-> _"Cuando la velocidad y la seguridad de memoria no son opcionales."_
+> _"Implementar desde cero lo que usás como caja negra en producción."_
 
 ## 🎯 Objetivo del mes
 
-Transicionar los conceptos aprendidos arquitectónicamente hacia el desarrollo maduro en `Rust`. Perseguir la máxima eficiencia posible escribiendo código seguro a nivel memoria sin Garbage Collector (GC), aprovechando el checker de compilación fuertemente estático.
+Capstone de Rust: construir un motor de búsqueda vectorial semántica desde los fundamentos matemáticos (cosine similarity, SIMD), exponerlo como gRPC service y documentar benchmarks reales contra pgvector HNSW. Python orquesta; Rust computa.
 
 ---
 
 ## 📅 Proyectos del mes
 
-### 🏗️ Proyecto Principal: [RustForge](./proyecto-rustforge.md)
-Sistema backend construido completamente en Rust. Empuja frameworks asíncronos pesados resolviendo queries compile-time con SQLx. Se comunica con dashboards de administración por CLI nativo y WebSockets TUI (Ratatui) operando consumos bajísimos CPU/RAM en imágenes dockerizadas microscópicas (~25MB).
+### 🏗️ Proyecto Principal: [VectoRust](./proyecto-vectorust.md)
+Motor de búsqueda vectorial FLAT con SIMD en Rust puro, expuesto como servicio gRPC (tonic). Python/FastAPI maneja la extracción de embeddings (OpenAI text-embedding-3-small) y enriquecimiento de resultados con metadata. Benchmark documentado comparando FLAT-SIMD vs pgvector HNSW vs IVFFlat con conclusiones de tradeoffs explícitas en un ADR.
 
-- **Tecnologías**: Rust, Axum, Tokio, Serde, SQLx, Ratatui, Clap, Distroless Docker
-- **Estado**: ⬜ Pendiente
-
-### 🤖 AI Track: [TailorAI](./mes-06-tailorai.md)
-Capstone AI definitivo end-to-end. Integra los 5 proyectos previos de este sub-track (Gestión, Embeddings, Evaluación, Agentes, Seguridad) agrupados centralmente tras un orquestador AI global para ser empaquetado y vendido como un producto multi-nodo de Azure u otra infra genérica empresarial.
-
-- **Tecnologías**: Azure / Multi-Node, LangGraph enterprise
+- **Tecnologías**: Rust (tonic, portable-simd, mmap), FastAPI, gRPC/Protobuf, pgvector, OpenAI API
 - **Estado**: ⬜ Pendiente
 
 ---
 
 ## 🧠 Habilidades que se desarrollan
 
-- Lenguaje Rust nivel Intermedio/Avanzado: Types, Lifetimes, Borrow Checker, Traits.
-- Uso del entorno Tokio para Thread-pool concurrente masivo en tareas Async.
-- Verificación fuerte en DB (Compile-time DB schema validation) a base de proc-macros.
-- Re-Tooling y UI minimalista pero efectiva operada totalmente por consola (TUI).
-- CI/CD MLOps desplegado bajo arquitectura completa Cloud Corporate en Azure/AWS.
+- Matemática vectorial aplicada: cosine similarity, dot-product, L2 — implementadas con SIMD AVX2.
+- gRPC con tonic (Rust server) + grpcio (Python client): contratos binarios tipados entre lenguajes.
+- Memory-mapped files para carga de índices vectoriales de alta dimensión sin heap allocation.
+- Metodología de benchmarking rigurosa: Criterion, hyperfine, perf — resultados reproducibles.
+- Decision Records (ADR): documentar tradeoffs de arquitectura con datos empíricos.
