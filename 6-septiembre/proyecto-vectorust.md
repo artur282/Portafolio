@@ -1,10 +1,10 @@
 # 🎯 VectoRust
 
-> Motor de búsqueda vectorial semántica construido desde cero en Rust: índice FLAT con cosine/dot-product/L2, expuesto como gRPC service, con Python manejando la extracción de embeddings. Benchmark documentado vs pgvector HNSW.
+> Motor de búsqueda vectorial semántica construido desde cero en Rust: índice FLAT con SIMD, expuesto como gRPC service, orquestado por Python/FastAPI — con una UI React que hace el demo visual e instantáneo. Benchmark documentado vs pgvector HNSW.
 
-[![Stack](https://img.shields.io/badge/Stack-Rust_|_gRPC_tonic_|_Python_FastAPI_|_HNSW-blue?style=flat-square)](.)
+[![Stack](https://img.shields.io/badge/Stack-Rust_SIMD_|_gRPC_tonic_|_FastAPI_|_React_+_TailwindCSS-blue?style=flat-square)](.)
 [![Domain](https://img.shields.io/badge/Domain-Semantic_Search_+_Recommendations-purple?style=flat-square)](.)
-[![Track](https://img.shields.io/badge/Track-High_Performance_Rust_+_AI-red?style=flat-square)](.)
+[![Track](https://img.shields.io/badge/Track-High_Performance_Rust_+_AI_+_UI-red?style=flat-square)](.)
 [![Mes](https://img.shields.io/badge/Mes-Septiembre_2026-green?style=flat-square)](.)
 
 ---
@@ -29,6 +29,7 @@
 | IPC / API | `tonic` (gRPC) + Protobuf | Contrato tipado binario entre Python y Rust |
 | Embeddings | `text-embedding-3-small` (OpenAI) vía Python | Python tiene el ecosistema ML, Rust tiene la velocidad de cómputo |
 | API pública | FastAPI | Recibe queries de usuario, llama al motor Rust vía gRPC |
+| UI de búsqueda | React 18 + TailwindCSS | Caja de texto → resultados con score de similitud visual |
 | Persistencia | PostgreSQL (metadata) + archivos `.bin` mmap (vectores) | Memory-mapped files para carga instantánea |
 | Perfilado | `cargo bench` (Criterion), `hyperfine`, `perf` en Linux | Benchmark reproducible y publicable |
 | Comparativa | `pgvector` con HNSW e IVFFlat | Tabla de tradeoffs en `docs/benchmark.md` |
@@ -39,14 +40,19 @@
 
 ```mermaid
 flowchart LR
+    subgraph Browser [React UI]
+        RUI[Caja de búsqueda\nTailwindCSS]
+        RRES[Tarjetas de resultado\nScore + imagen + precio]
+    end
+
     subgraph Python [FastAPI — API Pública]
-        UI[POST /search\nrecibe query de usuario]
+        API[POST /search\nrecibe query text]
         EMB[Embedding Service\nOpenAI text-embedding-3-small]
         GRPC_C[gRPC Client\ntonic-python]
     end
 
     subgraph Rust [VectoRust Engine — gRPC Server]
-        IDX[In-Memory Index\nVec - vector1536f32]
+        IDX[In-Memory Index\nVec - 500K × 1536 f32]
         FLAT[FLAT Scanner\nSIMD cosine similarity]
         FILTER[Metadata Filter\nBitset pre-filtering]
         SCORE[Scorer\nalpha * similarity + beta * popularity]
@@ -57,16 +63,94 @@ flowchart LR
         MMAP[(index.bin\nmemory-mapped\n500K × 1536 f32)]
     end
 
-    UI -->|query text| EMB
-    EMB -->|embedding f32 x 1536| GRPC_C
-    GRPC_C -->|gRPC SearchRequest| IDX
+    RUI --> |query text| API
+    API --> EMB
+    EMB --> |embedding f32 x 1536| GRPC_C
+    GRPC_C --> |gRPC SearchRequest| IDX
     IDX --> FILTER --> FLAT --> SCORE
-    SCORE -->|top-K ids + scores| GRPC_C
-    GRPC_C --> UI
-    UI -->|enrich con metadata| PG
+    SCORE --> |top-K ids + scores| GRPC_C
+    GRPC_C --> API
+    API --> |enrich con metadata| PG
+    API --> |JSON resultados| RRES
 
-    PG -.->|load at startup| IDX
-    MMAP -.->|mmap at startup| IDX
+    PG -.-> |load at startup| IDX
+    MMAP -.-> |mmap at startup| IDX
+```
+
+### React — UI de búsqueda semántica
+
+```tsx
+// SearchBar.tsx — entrada + llamada al backend FastAPI
+import { useState } from "react";
+
+interface SearchHit {
+  id: number;
+  name: string;
+  image_url: string;
+  price: number;
+  similarity: number; // 0.0 - 1.0
+}
+
+export function SearchBar() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<SearchHit[]>([]);
+  const [latencyMs, setLatencyMs] = useState<number | null>(null);
+
+  const handleSearch = async () => {
+    const t0 = performance.now();
+    const res = await fetch("/api/search", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, k: 12 }),
+    });
+    const data = await res.json();
+    setLatencyMs(Math.round(performance.now() - t0));
+    setResults(data.hits);
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="flex gap-2 mb-4">
+        <input
+          className="flex-1 border rounded-lg px-4 py-2 text-lg"
+          placeholder="Buscar productos..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+        />
+        <button
+          className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
+          onClick={handleSearch}
+        >
+          Buscar
+        </button>
+      </div>
+
+      {latencyMs !== null && (
+        <p className="text-sm text-gray-500 mb-4">
+          {results.length} resultados en {latencyMs}ms
+        </p>
+      )}
+
+      {/* Grid de resultados con score de similitud visible */}
+      <div className="grid grid-cols-3 gap-4">
+        {results.map((hit) => (
+          <div key={hit.id} className="border rounded-lg p-3 shadow-sm">
+            <img src={hit.image_url} className="w-full h-40 object-cover rounded mb-2" />
+            <h3 className="font-medium">{hit.name}</h3>
+            <div className="flex justify-between items-center mt-1">
+              <span className="text-gray-700">${hit.price}</span>
+              {/* Score visible: el diferenciador clave vs una búsqueda normal */}
+              <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">
+                {(hit.similarity * 100).toFixed(1)}% similar
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 ```
 
 ### Rust — Motor de búsqueda vectorial FLAT con SIMD
@@ -234,8 +318,8 @@ async def semantic_search(
 - [ ] **Memory-mapped index**: `index.bin` cargado en startup con `mmap`, no heap allocation
 - [ ] **Metadata filtering**: filtro por bitset pre-calculado (categoría, precio, stock)
 - [ ] **Scoring compuesto**: `score = alpha * cosine_sim + beta * log(popularity + 1)`
-- [ ] **ADR documentado**: Decision Record explicando tradeoffs FLAT vs HNSW vs IVFFlat con datos reales
-- [ ] **Demo end-to-end**: FastAPI frontend → embed → Rust search → PostgreSQL enrich → respuesta < 200ms total
+- [ ] **React UI funcional**: `npm run dev` levanta la UI de búsqueda — se puede tipear una query, ver resultados con scores de similitud en < 200ms totales
+- [ ] **ADR documentado**: Decision Record explicando tradeoffs FLAT vs HNSW vs IVFFlat con datos reales + cuándo NO usar este motor
 - [ ] **Tests Rust**: `#[test]` para cosine_similarity con casos edge (vector zero, normalizado, NaN handling)
 
 ---

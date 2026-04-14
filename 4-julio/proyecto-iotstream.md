@@ -1,10 +1,10 @@
 # 🚗 IoTStream
 
-> Plataforma de telemetría vehicular en tiempo real: Rust/Axum ingesta miles de eventos por segundo desde sensores simulados, Kafka los distribuye, TimescaleDB los persiste con compresión automática, y FastAPI expone analytics predictivos de mantenimiento preventivo.
+> Plataforma de telemetría vehicular end-to-end: Rust/Axum ingesta miles de eventos por segundo desde sensores simulados, Kafka los distribuye, TimescaleDB los persiste con compresión automática, FastAPI expone analytics predictivos — y React + Flutter visualizan todo en tiempo real.
 
-[![Stack](https://img.shields.io/badge/Stack-Rust_Axum_|_Kafka_|_TimescaleDB_|_FastAPI-blue?style=flat-square)](.)
+[![Stack](https://img.shields.io/badge/Stack-Rust_|_Kafka_|_TimescaleDB_|_FastAPI_|_React_|_Flutter-blue?style=flat-square)](.)
 [![Domain](https://img.shields.io/badge/Domain-Fleet_Telemetry_IoT-red?style=flat-square)](.)
-[![Track](https://img.shields.io/badge/Track-Data_Engineering_+_Realtime-orange?style=flat-square)](.)
+[![Track](https://img.shields.io/badge/Track-Data_Engineering_+_Realtime_+_Full_Stack-orange?style=flat-square)](.)
 [![Mes](https://img.shields.io/badge/Mes-Julio_2026-green?style=flat-square)](.)
 
 ---
@@ -34,7 +34,9 @@
 | Broker | Apache Kafka 3.x | Retention configurable, consumer groups, exactly-once |
 | Time-series DB | TimescaleDB sobre PostgreSQL | Continuous aggregates, compresión nativa, retention policies |
 | Analytics | FastAPI + Pandas + SQLAlchemy async | Queries complejas sobre agregados, endpoints REST |
-| Dashboard | Grafana (datasource: TimescaleDB) | Visualización de series temporales sin código extra |
+| Dashboard web | React 18 + Recharts + TailwindCSS | Mapa GPS live, gráficas de telemetría via WebSocket |
+| App móvil | Flutter + Dart | App del gestor de flota: alertas push, vista de vehículo |
+| Observabilidad | Grafana (datasource: TimescaleDB) | Series temporales históricas para operaciones |
 | Testing | `cargo bench` + k6 (load test) | Benchmark de throughput documentado |
 
 ---
@@ -81,6 +83,14 @@ flowchart LR
     T2 -->|Alert Consumer Group| Alert
 
     Grafana -.->|SQL nativo| HT
+
+    subgraph Clients [Clientes]
+        WEB[React Dashboard\nRecharts + TailwindCSS\nWebSocket live]
+        MOB[Flutter App\nGestor de flota\nAlertas push]
+    end
+
+    API -->|WebSocket /ws/fleet| WEB
+    API -->|REST + FCM alerts| MOB
 ```
 
 ### Rust — Endpoint de ingesta de alta frecuencia (Axum 0.8)
@@ -273,8 +283,10 @@ async def predict_maintenance(
 - [ ] **Continuous aggregates corriendo**: `vehicle_readings_hourly` auto-refreshing visible en Grafana
 - [ ] **Compresión activa**: `timescaledb_information.chunks` muestra chunks comprimidos post 7 días
 - [ ] **Mantenimiento predictivo**: endpoint calcula y persiste alertas en tabla `maintenance_alerts`
+- [ ] **React Dashboard**: mapa GPS en tiempo real (React-Leaflet), gráficas de RPM/temp/fuel con Recharts actualizadas via WebSocket, panel de alertas activas — demostrable con `npm run dev`
+- [ ] **Flutter App**: pantalla de lista de vehículos, detalle con métricas en tiempo real (polling 5s), badge de alerta cuando `alert_level = HIGH`
 - [ ] **Simulador realista**: generador de datos con dropout simulado (vehículos que se desconectan), late events y spikes de temperatura que representan fallas reales
-- [ ] **Docker Compose completo**: Rust ingester + Kafka + Zookeeper + TimescaleDB + FastAPI + Grafana
+- [ ] **Docker Compose completo**: Rust ingester + Kafka + Zookeeper + TimescaleDB + FastAPI + Grafana (React se sirve con `npm run dev` en desarrollo)
 
 ---
 
