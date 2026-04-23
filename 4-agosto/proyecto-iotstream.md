@@ -5,7 +5,7 @@
 [![Stack](https://img.shields.io/badge/Stack-Rust_|_Kafka_|_TimescaleDB_|_FastAPI_|_React_|_Flutter-blue?style=flat-square)](.)
 [![Domain](https://img.shields.io/badge/Domain-Fleet_Telemetry_IoT-red?style=flat-square)](.)
 [![Track](https://img.shields.io/badge/Track-Data_Engineering_+_Realtime_+_Full_Stack-orange?style=flat-square)](.)
-[![Mes](https://img.shields.io/badge/Mes-Julio_2026-green?style=flat-square)](.)
+[![Mes](https://img.shields.io/badge/Mes-Agosto_2026-green?style=flat-square)](.)
 
 ---
 

@@ -1,4 +1,4 @@
-# 🏆 Agosto — Capstone Projects
+# 🏆 Septiembre — Capstone Projects
 
 > _"El final es sólo el inicio cuando se entrega valor al ecosistema."_
 

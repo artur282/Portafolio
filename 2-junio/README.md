@@ -1,4 +1,4 @@
-# 📊 Mayo — Data Engineering & SaaS Patterns
+# 📊 Junio — Data Engineering & SaaS Patterns
 
 > _"Los datos sin estructura son ruido. Las APIs sin aislamiento son un riesgo."_
 

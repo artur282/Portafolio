@@ -5,7 +5,7 @@
 [![Stack](https://img.shields.io/badge/Stack-Rust_SIMD_|_gRPC_tonic_|_FastAPI_|_React_+_TailwindCSS-blue?style=flat-square)](.)
 [![Domain](https://img.shields.io/badge/Domain-Semantic_Search_+_Recommendations-purple?style=flat-square)](.)
 [![Track](https://img.shields.io/badge/Track-High_Performance_Rust_+_AI_+_UI-red?style=flat-square)](.)
-[![Mes](https://img.shields.io/badge/Mes-Septiembre_2026-green?style=flat-square)](.)
+[![Mes](https://img.shields.io/badge/Mes-Octubre_2026-green?style=flat-square)](.)
 
 ---
 

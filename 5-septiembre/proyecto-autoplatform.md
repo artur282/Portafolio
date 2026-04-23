@@ -4,7 +4,7 @@
 
 [![Stack](https://img.shields.io/badge/Stack-FastAPI_|_Next.js_|_LangChain_|_Vercel-blue?style=flat-square)](.)
 [![Track](https://img.shields.io/badge/Track-Capstone_Integration-gold?style=flat-square)](.)
-[![Mes](https://img.shields.io/badge/Mes-Agosto_2026-green?style=flat-square)](.)
+[![Mes](https://img.shields.io/badge/Mes-Septiembre_2026-green?style=flat-square)](.)
 
 ---
 

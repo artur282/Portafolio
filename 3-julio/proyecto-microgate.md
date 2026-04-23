@@ -4,7 +4,7 @@
 
 [![Stack](https://img.shields.io/badge/Stack-FastAPI_|_Rust_Axum_|_gRPC_|_Distroless-blue?style=flat-square)](.)
 [![Track](https://img.shields.io/badge/Track-DevOps_+_Cloud_+_Polyglot-lightgrey?style=flat-square)](.)
-[![Mes](https://img.shields.io/badge/Mes-Junio_2026-green?style=flat-square)](.)
+[![Mes](https://img.shields.io/badge/Mes-Julio_2026-green?style=flat-square)](.)
 
 ---
 

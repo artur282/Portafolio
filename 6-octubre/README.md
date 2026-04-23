@@ -1,4 +1,4 @@
-# 🎯 Septiembre — Rust & Semantic Search
+# 🎯 Octubre — Rust & Semantic Search
 
 > _"Implementar desde cero lo que usás como caja negra en producción."_
 

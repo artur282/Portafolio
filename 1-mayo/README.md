@@ -1,4 +1,4 @@
-# 🤖 Abril — IA/ML & GenAI
+# 🤖 Mayo — IA/ML & GenAI
 
 > _"Sistemas empresariales potenciados por inteligencia artificial real."_
 

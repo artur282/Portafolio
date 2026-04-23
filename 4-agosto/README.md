@@ -1,4 +1,4 @@
-# 🚗 Julio — IoT & Real-Time Data Engineering
+# 🚗 Agosto — IoT & Real-Time Data Engineering
 
 > _"Cuando los datos llegan de miles de sensores por segundo y no podés perder ni uno."_
 

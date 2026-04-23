@@ -1,4 +1,4 @@
-# ☁️ Junio — DevOps, Cloud & Polyglotism
+# ☁️ Julio — DevOps, Cloud & Polyglotism
 
 > _"La infraestructura resiliente es el puente entre una app local y escala global."_
 
