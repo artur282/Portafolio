@@ -17,6 +17,7 @@
 - Risk engine policy default `RISK_FAIL_MODE=closed` (unreachable engine denies).
 - One-command demo contract: fresh clone → `docker compose up` → dashboard on :5173, API on :8000, Grafana on :3001. No local toolchain besides Docker.
 - Docs in English; conventional commits; TDD red-green-refactor per task.
+- **UI i18n (hard requirement):** three locales — `en` (default), `es`, `de`. No hardcoded user-facing strings anywhere in `web/`; locale persisted in `localStorage` (`lc_locale`) with browser-language detection fallback; every amount/date rendered through `Intl.NumberFormat`/`Intl.DateTimeFormat` using the active locale.
 - Target repo: new repo at `~/Documents/Desarrollo/ledgercore` (created by Task 1).
 
 ---
@@ -551,24 +552,29 @@ message EvaluateDecision { bool allowed=1; repeated string reasons=2; int32 scor
 
 ## Phase L4 — React Dashboard (demoable product)
 
-### Task 26: Vite scaffold + typed API client + auth pages
+### Task 26: Vite scaffold + typed API client + auth pages + i18n base
 
 **Files:**
 - Create: `web/` (vite react-ts template, tailwind init), `web/src/api/client.ts`, `web/src/pages/{Login.tsx,Register.tsx}`
-- Test: `web/src/api/client.test.ts` (vitest, msw)
+- Create: `web/src/i18n/index.ts`, `web/src/i18n/locales/{en.json,es.json,de.json}`
+- Test: `web/src/api/client.test.ts` (vitest, msw), `web/src/i18n/i18n.test.ts`
 
 **Interfaces:**
 - Produces: `apiClient` with `login/register/createAccount/getAccounts/pay(payload,idemKey)/streamEvents(onEvent)`; JWT stored in memory + localStorage refresh-on-mount; 401 → redirect login.
+- Produces: i18n singleton via `react-i18next` — `initI18n()` loading namespaces from `locales/*.json`; helper `t(key, opts?)`; supported locales const `SUPPORTED = ['en','es','de'] as const`; key parity enforced by test.
 
-- [ ] Steps: scaffold (`npm create vite@latest web -- --template react-ts`), tailwind init, msw handlers for auth endpoints, failing client tests (token attached, 401 handling) → implement fetch wrapper → vitest PASS → Login/Register forms wired → commit `feat(web): api client and auth pages`.
+- [ ] Steps: scaffold (`npm create vite@latest web -- --template react-ts`), tailwind init, **install `i18next react-i18next`**, create locale files covering ALL existing strings (auth + common nav) with complete translations en/es/de — German uses formal register (Sie-form), Spanish neutral LatAm — failing tests: (a) msw handlers for auth endpoints token attached / 401 handling; (b) i18n test asserting `t('auth.login.title')` differs across the three locales and unknown key throws in dev → implement fetch wrapper + i18n init with `localStorage('lc_locale')` → navigator.language fallback clamped to SUPPORTED → vitest PASS → Login/Register forms wired **using `t()` only, zero literal strings** → commit `feat(web): api client, auth pages and trilingual i18n base`.
 
-### Task 27: Dashboard shell — accounts + balances
+### Task 27: Dashboard shell — accounts + balances + language switcher
 
 **Files:**
-- Create: `web/src/pages/Dashboard.tsx`, `web/src/components/AccountCard.tsx`
-- Test: `web/src/components/AccountCard.test.tsx`
+- Create: `web/src/pages/Dashboard.tsx`, `web/src/components/{AccountCard.tsx,LanguageSwitcher.tsx}`, `web/src/lib/format.ts`
+- Test: `web/src/components/AccountCard.test.tsx`, `web/src/components/LanguageSwitcher.test.tsx`
 
-- [ ] Steps: failing render test (card shows formatted major-unit amount from minor: `formatMinor(1050,'USD')==='$10.50'`) → implement card + grid fetching `getAccounts` every 5s (polling hook `usePolling(fn,ms)`) → vitest PASS → commit `feat(web): dashboard with live balances`.
+**Interfaces:**
+- Produces: `formatMinor(amountMinor:number, currency:string, locale:'en'|'es'|'de')` — BIGINT minor units → localized string via `Intl.NumberFormat(locale,{style:'currency',currency})`; `<LanguageSwitcher/>` renders EN|ES|DE toggle writing `localStorage('lc_locale')`, syncing `document.documentElement.lang`, and triggering i18next re-render.
+
+- [ ] Steps: failing render tests (card shows formatted amount per active locale — e.g. minor 1050 USD renders `$10.50` in en and `10,50 US$` in de; switcher click changes visible nav label and persists) → implement card + switcher + grid fetching `getAccounts` every 5s (polling hook `usePolling(fn,ms)`) → vitest PASS → commit `feat(web): dashboard with live balances and language switcher`.
 
 ### Task 28: Transfer form modal (idempotent UX)
 
@@ -595,7 +601,7 @@ message EvaluateDecision { bool allowed=1; repeated string reasons=2; int32 scor
 - Create: `web/Dockerfile` (node:20 build → nginx:alpine serve, proxy `/api`,`/events`→api), `web/e2e/happy.spec.ts`, playwright.config.ts
 - Modify: `docker-compose.yml` (+`web` service profile `demo` port 5173)
 
-- [ ] e2e scenario: register A+B (via UI) → dev-seed fund A (`LC_ENABLE_DEV_ENDPOINTS=true` route `POST /dev/seed {account_id, amount_minor}` added with guard test) → A transfers 500 to B → B page (second context) balance updates WITHOUT reload ≤5s (assert DOM text change) → screenshots to `docs/screenshots/l4-dashboard.png`.
+- [ ] e2e scenario: register A+B (via UI) → dev-seed fund A (`LC_ENABLE_DEV_ENDPOINTS=true` route `POST /dev/seed {account_id, amount_minor}` added with guard test) → A transfers 500 to B → B page (second context) balance updates WITHOUT reload ≤5s (assert DOM text change) → **i18n assertion: switch language EN→DE, assert transfer modal label changes (e.g. `Amount`→`Betrag`) AND persists after page reload** → screenshots to `docs/screenshots/l4-dashboard.png`.
 - [ ] Run: `npm run e2e` green with compose stack up. Commit `e2e: full transfer journey through UI` + `docs: L4 exit`.
 
 ---

@@ -16,6 +16,7 @@
 - Money/qty for trading math uses f64 quantities but PnL persisted as numeric(20,8) in PG.
 - No exchange API key required (public market streams only).
 - Docs in English; conventional commits with crate scopes (`feat(ingestor):`, `feat(engine):`…); TDD per task.
+- **UI i18n (hard requirement):** three locales — `en` (default), `es`, `de`. No hardcoded user-facing strings in `web/`; locale persisted in `localStorage` (`tf_locale`) with browser-language fallback; trading vocabulary glossary maintained in all three locales (Bid/Ask→Geldbrief/Briefbrief-de·puja/demanda-es, Fill, Order, PnL, Positions); prices/percentages via `Intl.NumberFormat` with active locale.
 - Target repo: new repo at `~/Documents/Desarrollo/tickforge` (Task 1 creates it).
 
 ---
@@ -346,15 +347,18 @@ SELECT add_retention_policy('trades', INTERVAL '30 days');
 
 ## Phase T5 — Trading Desk Dashboard
 
-### Task 26: Vite scaffold + WS hook with reconnect
+### Task 26: Vite scaffold + WS hook with reconnect + i18n base
 
 **Files:**
 - Create: `web/` (vite react-ts + tailwind), `web/src/hooks/useMarketStream.ts`
-- Test: `web/src/hooks/useMarketStream.test.ts` (vitest + mocked WebSocket)
+- Create: `web/src/i18n/index.ts`, `web/src/i18n/locales/{en.json,es.json,de.json}` (namespaces `common` + `trading` incl. glossary Bid/Ask/Fill/PnL/Order/Position), `web/src/components/{AppShell.tsx,LanguageSwitcher.tsx}`
+- Test: `web/src/hooks/useMarketStream.test.ts` (vitest + mocked WebSocket), `web/src/i18n/i18n.test.ts`
 
 **Hook contract:** auto-reconnect exp backoff 500ms→5s; parses MarketEvent JSON; exposes `{candles, lastTrade, connected}`; caps candle buffer 720 shifting oldest.
 
-- [ ] Steps: failing tests (connect, event appends candle update, reconnect after close, buffer cap) → implement → PASS → commit `feat(web): market stream hook`.
+**i18n contract:** `react-i18next` singleton; `SUPPORTED = ['en','es','de']`; persistence `localStorage('tf_locale')`; fallback navigator.language clamped; German formal register; key-parity test across locales.
+
+- [ ] Steps: failing tests (connect, event appends candle update, reconnect after close, buffer cap; i18n: glossary key `trading.bid` differs per locale, unknown key throws in dev) → implement hook + i18n init + AppShell header containing `<LanguageSwitcher/>` → PASS → commit `feat(web): market stream hook and trilingual shell`.
 
 ### Task 27: Watchlist strip + price flash
 
@@ -375,7 +379,7 @@ SELECT add_retention_policy('trades', INTERVAL '30 days');
 ### Task 30: nginx container + Playwright live e2e + exit
 
 **Files:** `web/Dockerfile` (multi-stage node build→nginx proxy `/api`,`/ws`), `web/e2e/desk.spec.ts`
-- [ ] e2e: open desk with compose stack + soak running → expect chart data revision change within 3s → place market buy 0.001 → PositionsPanel row appears ≤5s → screenshot `docs/screenshots/t5-desk.png`. Commit `e2e: live desk journey` + `docs: T5 exit`.
+- [ ] e2e: open desk with compose stack + soak running → expect chart data revision change within 3s → place market buy 0.001 → PositionsPanel row appears ≤5s → **i18n assertion: switch EN→DE, assert ticket button label `Buy`→`Kaufen` and depth column header localized; persists after reload** → screenshot `docs/screenshots/t5-desk.png`. Commit `e2e: live desk journey` + `docs: T5 exit`.
 
 ---
 

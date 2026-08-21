@@ -59,6 +59,7 @@ Offers analyzed: Fusion Consulting (Rust, CH) · Keyrock HFT (Rust, EU) · Lansw
 | 9 | Runtime contract | **One-command demo**: `docker compose up` boots everything incl. frontend | Hard requirement from user |
 | 10 | Build order | Incremental phases, each ending demoable | Risk reduction |
 | 11 | Target offer set finalized at 7 | Discarded Linro (Go-only), Revolut Graduate (eligibility), Nomic (EVM specialization) | Focus documentation and evidence on achievable targets |
+| 12 | UI i18n EN/ES/DE in both dashboards | react-i18next, `en` default, German formal register, key-parity tested, Intl formatting | ERNI requires German; Spanish serves LATAM network; English is EU default — trilingual UI is interview evidence for CH market |
 
 ## 4. Project 1 — LedgerCore 💳 Payments Platform
 

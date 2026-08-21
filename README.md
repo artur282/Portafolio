@@ -91,6 +91,7 @@ Both projects ship:
 - **🧪 TDD:** tests first on the hard problems; property-based testing for invariants; Testcontainers integration suites.
 - **🔁 CI/CD:** GitHub Actions — lint (clippy/ruff) → unit → integration → multi-arch distroless build → GHCR → compose smoke test.
 - **📊 Observability:** OpenTelemetry traces across the Python↔gRPC↔Rust boundary, Prometheus metrics, Grafana dashboards-as-code.
+- **🌐 Trilingual UI:** both dashboards ship EN/ES/DE (German formal register) via i18next with key-parity tests — direct alignment with Swiss market requirements.
 - **☸️ Deployment:** Docker Compose dev/demo; TickForge additionally ships Helm/K8s manifests.
 
 ## 📊 Stack vs Market Matrix
