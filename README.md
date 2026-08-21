@@ -1,151 +1,138 @@
-# 🚀 Portafolio de Ingeniería de Software + AI — Mayo a Octubre 2026
+# 🎯 Software Engineering Portfolio — Backend Senior (Python · Rust)
 
-> **6 megaproyectos. 6 meses. Backend Senior + AI Engineer en un solo roadmap consolidado.**
+> **Two production-grade systems. One engineering standard.**
+> Not tutorials — complete products with architecture decisions, performance benchmarks, real infrastructure, and live frontends.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Duración-6_meses-blue?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Proyectos-6_Sistemas_de_Producci%C3%B3n-green?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Stack-Python_|_Rust_|_LLMs_|_Kafka_|_gRPC-purple?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Projects-2_Production_Systems-blue?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Stack-Python_|_Rust_|_Kafka_|_gRPC_|_React-purple?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Demo-docker_compose_up-green?style=for-the-badge"/>
 </p>
 
 ---
 
-## 📋 Tabla de contenidos
+## 📋 Table of Contents
 
-- [🎯 Objetivo](#-objetivo)
-- [🗺️ Roadmap visual](#️-roadmap-visual)
-- [📅 Plan mensual](#-plan-mensual)
-- [🛠️ Stack tecnológico](#️-stack-tecnológico)
-- [📐 Metodología](#-metodología)
-- [📊 Progreso](#-progreso)
-
----
-
-## 🎯 Objetivo
-
-Construir un portafolio de **máxima escalabilidad e impacto B2B**. En lugar de múltiples proyectos pequeños desconectados, construimos **un macro-sistema consolidado mensual**. Cada mes representa una plataforma B2B/B2C lista para producción combinada para demostrar expertise senior en ingeniería conectada, IA integrada y arquitecturas Cloud, DevOps & Full Stack. 
-
-### Principios del portafolio
-
-| Principio                          | Descripción                                                                                        |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------- |
-| 🏗️ **Producción primero**          | Enfoque industrial. Todo tiene Docker multi-stage, CI/CD, métricas robustas.                       |
-| 📈 **Progresión Consolidada**      | Sistemas de complejidad real: Un producto funcional robusto > Múltiples librerías pequeñas aisladas|
-| 🔗 **Integración Completa**        | Backends, microservicios iterativos comunicados (Rest + gRPC + Rabbit) conviviendo paralelamente.  |
-| 📖 **Documentación Estricta**      | README, UML (Arquitectura, Componentes, Secuencia), Decisiones y OpenAPI nativa exhaustiva.        |
-| 🧪 **TDD & Event Driven**          | Driven by Test (Rojo→Verde→Refactor) y Driven by Event (Sagas, RabbitMQ brokers, Pub/Subs).      |
-| 🛡️ **Tipado y Compiladores**       | Fuerte adopción del compiler-checker vía Rust o Strong Typing Pydantic con Strict mode.            |
+- [The Portfolio](#-the-portfolio)
+- [💳 LedgerCore — Payments Platform](#-ledgercore--payments-platform)
+- [📈 TickForge — Market Data & Paper-Trading Engine](#-tickforge--market-data--paper-trading-engine)
+- [Engineering Standard](#-engineering-standard)
+- [Stack vs Market Matrix](#-stack-vs-market-matrix)
+- [Roadmap](#-roadmap)
+- [Archive](#-archive)
 
 ---
 
-## 🗺️ Roadmap visual
+## 🌟 The Portfolio
 
-```
-ABR ──────── MAY ──────── JUN ──────── JUL ──────── AGO ──────── SEP
-  │            │            │            │            │            │
-  ▼            ▼            ▼            ▼            ▼            ▼
-🤖 RAG/MCP  📊 SaaS+     ☁️ API GW    🚗 IoT       🏆 Automation  🎯 Vector
-Knowledge   Booking      MicroGate   Stream       AutoPlatform   Search
-Forge       Forge        Polyglot    (Rust+Kafka) (Capstone)     VectoRust
-  │            │            │            │            │            │
-  ├─ Python    ├─ RLS+Redis ├─ Rust+Py   ├─ Rust      ├─ LCEL chain  ├─ Rust SIMD
-  ├─ pgvector  ├─ Redlock   ├─ gRPC      ├─ Kafka     ├─ Next.js ISR  ├─ gRPC tonic
-  └─ MCP SDK   └─ Redis     └─ Distroless └─ Timescale └─ Portfolio   └─ Benchmarks
-```
+Every project in this portfolio follows one contract:
 
----
+> **`docker compose up`** — and the entire system is running: backend services (Python + Rust), databases, message broker, observability stack, **and the frontend**. No local toolchain beyond Docker.
 
-## 📅 Plan mensual
-
-### [1. Mayo — KnowledgeForge (IA/ML & GenAI)](./1-mayo/)
-Plataforma empresarial de gestión de conocimiento. Ingesta documentos, los indexa con Elasticsearch+pgvector, ofrece RAG avanzado, chatbot, y expone su base vía servidor MCP nativo.
-
-**Stack:** FastAPI · pgvector · LangChain · Elasticsearch · MCP SDK
+| Capability | LedgerCore | TickForge |
+|---|:-:|:-:|
+| Distributed consistency / strict ACID | ✅ core | ➖ |
+| High concurrency / throughput | ✅ | ✅ core |
+| Event-driven (Kafka, outbox, sagas) | ✅ | ✅ |
+| Polyglot Python ↔ Rust (gRPC/Protobuf) | ✅ | ✅ |
+| Geospatial-free real-time (WebSocket streaming) | SSE | ✅ core |
+| AI integration (fraud LLM / MCP servers) | ✅ | ✅ |
+| Infra: Docker distroless, CI/CD, K8s, observability | ✅ | ✅ + Helm |
+| Visual demo (React + Vite) | ✅ banking dashboard | ✅ live trading desk |
 
 ---
 
-### [2. Junio — SaaSForge (SaaS Patterns & Data)](./2-junio/)
-Plataforma SaaS multi-tenant. Aislamiento de datos por Row-Level Security (RLS) en PostgreSQL, reserva concurrente de recursos con Distributed Lock (Redis SETNX) que previene overbooking bajo alta concurrencia, cuotas de uso por plan con sliding window, y pipeline ETL validado con Pandas.
+## 💳 LedgerCore — Payments Platform
 
-**Stack:** PostgreSQL RLS · Redis SETNX · Pandas · FastAPI · OpenTelemetry
+> Multi-currency wallets · double-entry ledger · idempotent payment API · sub-ms risk engine in Rust · LLM fraud analysis · banking dashboard.
 
----
+**Repo:** [`github.com/<you>/ledgercore`](https://github.com/) *(in progress)*
 
-### [3. Julio — MicroGate (Cloud & Microservices)](./3-julio/)
-Patrones avanzados arquitectónicos "Polyglot". API Gateway en Python protege, autentica y divide cargas a un microservicio escrito absolutamente en Rust (Axum / Distroless). Comunicación inter-servicio super-veloz (gRPC/ProtoBuf). Automatización 100% CI/CD.
+### What makes it hard
 
-**Stack:** Rust/Axum · FastAPI · gRPC/Protobuf · Redis · Distroless Docker · GitHub Actions
+| Problem | Solution | Proof |
+|---|---|---|
+| Concurrent transfers corrupting balances | Row-level locking + ACID ledger | k6: 1000 concurrent transfers → 0 anomalies |
+| Duplicate payments under retries | Idempotency keys (Redis fast-path + DB constraint) | Retry-storm test suite |
+| Dual-write between DB and Kafka | Transactional outbox pattern | Crash-recovery test |
+| Fraud scoring on hot path | Rust/Axum gRPC engine, in-memory velocity windows | Benchmark: <5ms p99 |
+| Money integrity | Property-based tests: `sum(debits) == sum(credits)` always | Hypothesis suites |
 
----
-
-### [4. Agosto — IoTStream (IoT & Real-Time Data Engineering)](./4-agosto/)
-Plataforma de telemetría vehicular. Rust/Axum ingesta miles de eventos/seg desde sensores, Kafka garantiza exactly-once delivery con 6 particiones, TimescaleDB persiste con continuous aggregates automáticos y compresión nativa, FastAPI expone analytics predictivos de mantenimiento preventivo vehicular.
-
-**Stack:** Rust/Axum · rdkafka · Apache Kafka · TimescaleDB · FastAPI · Grafana
-
----
-
-### [5. Septiembre — AutoPlatform (Capstone V1)](./5-septiembre/)
-El primer pico. Hub de flujo de automatizaciones dirigidos con IA (Strategy pattern engine). Levantando adicionalmente el despliegue del código abierto, Marketplace APIs auto-generado y publicando en línea el Portfolio consolidado estático visualizando todos los retos.
-
-**Stack:** Next.js 15 · FastAPI · LangChain LCEL · GoF Strategy · Vercel
+**Architecture:** FastAPI (API/orchestration) ⇄ gRPC ⇄ Risk Engine (Rust) → PostgreSQL (immutable double-entry entries, BIGINT minor units) → transactional outbox → Kafka → notification/fraud/audit consumers.
 
 ---
 
-### [6. Octubre — VectoRust (Semantic Search & High-Performance Rust)](./6-octubre/)
-Motor de búsqueda vectorial semántica construido desde cero en Rust con SIMD. Expuesto vía gRPC (tonic). Python/FastAPI orquesta la extracción de embeddings (OpenAI) y el enriquecimiento de resultados. Benchmark documentado FLAT-SIMD vs pgvector HNSW con ADR de tradeoffs. Dominio: recomendaciones de e-commerce (500K productos).
+## 📈 TickForge — Market Data & Paper-Trading Engine
 
-**Stack:** Rust SIMD · tonic gRPC · FastAPI · pgvector · OpenAI Embeddings
+> Live crypto market ingestion (Binance WS) · in-memory L2 order books in Rust · event-sourced matching engine · TimescaleDB tick store · real-time trading desk UI.
 
----
+**Repo:** [`github.com/<you>/tickforge`](https://github.com/) *(in progress)*
 
-## 🛠️ Stack tecnológico
+### What makes it hard
 
-```text
-Backend           IA/ML Track        DevOps & Cloud      Distributed Systems
-─────────         ───────────        ───────────      ───────────────────
-Python 3.11+      LangChain/Graph    Docker              Redis SETNX Locks
-FastAPI           MCP SDK            GitHub Actions      Kafka (exactly-once)
-PostgreSQL (RLS)  RAGAS Metrics      GitFlow Branch      TimescaleDB
-Rust 🦀 (Axum)    Langfuse Monitor   Linux/Bash          gRPC / tonic
-gRPC / Protobuf   Presidio PII       Prometheus Monit    Dist. Locking
-Elasticsearch     OpenAI / VectorDB  Distroless Build    OpenTelemetry
-```
+| Problem | Solution | Proof |
+|---|---|---|
+| Ingesting exchange feeds without loss | Rust/Tokio ingestor with reconnects, backpressure, gap detection | Sustained-stream soak test |
+| Order book at trading speed | Lock-minimized L2 book in memory | Criterion: µs per update |
+| Simulated trading against real prices | Event-sourced matching engine | Deterministic replay test |
+| Millions of ticks queried fast | TimescaleDB hypertables + continuous aggregates + compression | Query latency report |
+| Perceived performance | End-to-end latency pipeline | ingest→UI p50/p99 chart |
+
+**Architecture:** Binance WS → Rust ingestor → Kafka → Market Engine (books/candles/indicators) ⇄ gRPC ⇄ FastAPI (orders/history/WS fan-out) → React dashboard (lightweight-charts, depth ladder, PnL).
 
 ---
 
-## 📐 Metodología
+## 🧭 Engineering Standard
 
-Cada macro-proyecto sigue estructura modular corporativa estandarizada:
+Both projects ship:
 
-```text
-/mes-proyecto
-├── README.md                  # Descripción particular
-├── docs/                      # UML, ADR (Decision Logs) y OpenAPIs
-├── src/                       # App
-│   ├── web/                   # Capa Gateways (REST, gRPC, Sockets)
-│   ├── domain/                # Capa Negocio Agnostic
-│   ├── infrastructure/        # Capa Data Brokers, SQL Repos
-│   └── scripts/               # Utilidades DB y CLIs
-├── tests/                     # Integración Containers y e2e
-├── docker-compose.yml         # Dev Environment Start
-└── Makefile                   # Entrypoints standards
-```
+- **📖 English docs:** README, 10+ ADRs, C4/Mermaid diagrams, OpenAPI, benchmark reports, runbook.
+- **🤖 Agentic engineering:** each platform exposes an **MCP server** (AI agents can operate it: `get_balance`, `place_paper_order`, …) plus an `AGENTS.md` documenting the AI-assisted workflow that built it.
+- **🧪 TDD:** tests first on the hard problems; property-based testing for invariants; Testcontainers integration suites.
+- **🔁 CI/CD:** GitHub Actions — lint (clippy/ruff) → unit → integration → multi-arch distroless build → GHCR → compose smoke test.
+- **📊 Observability:** OpenTelemetry traces across the Python↔gRPC↔Rust boundary, Prometheus metrics, Grafana dashboards-as-code.
+- **☸️ Deployment:** Docker Compose dev/demo; TickForge additionally ships Helm/K8s manifests.
 
-## 📊 Progreso Mensual Consolidado
+## 📊 Stack vs Market Matrix
 
-| Mes | Proyecto Macro | Stack clave | Estado |
-| --- | --- | --- | --- |
-| 🤖 Mayo | KnowledgeForge | FastAPI · pgvector · LangChain · MCP | ⬜ Pendiente |
-| 📊 Junio | SaaSForge | PostgreSQL RLS · Redis SETNX · Pandas | ⬜ Pendiente |
-| ☁️ Julio | MicroGate | Rust Axum · FastAPI · gRPC · Distroless | ⬜ Pendiente |
-| 🚗 Agosto | IoTStream | Rust · Kafka · TimescaleDB · FastAPI | ⬜ Pendiente |
-| 🏆 Septiembre | AutoPlatform | Next.js ISR · LangChain · GoF Strategy | ⬜ Pendiente |
-| 🎯 Octubre | VectoRust | Rust SIMD · gRPC tonic · pgvector · OpenAI | ⬜ Pendiente |
-| **Total** | **6 Proyectos** | **Python · Rust · LLMs · Kafka · gRPC** | **0%** |
+Skill matrix validated against 10 real job offers (Switzerland & Europe, Python/Rust backend roles):
 
----
+| Requirement | Covered by |
+|---|---|
+| Production Rust (async/Tokio, Axum, tonic) | TickForge core + LedgerCore risk engine |
+| Production Python/FastAPI at senior level | Both API layers + consumers |
+| Kafka / event-driven architecture | Outbox+consumers (LedgerCore), stream processing (TickForge) |
+| Deep PostgreSQL / time-series SQL | Double-entry ledger design / TimescaleDB aggregates |
+| Low-latency systems + benchmarks | Risk engine <5ms p99 / order book µs ops |
+| Kubernetes + Helm + distroless images | CI builds + TickForge deploy story |
+| AI-native workflows (LLM, MCP) | Fraud scanner + per-project MCP servers |
+| Frontend demonstrable | Two full dashboards |
 
-## 📜 Licencia
+## 🗺️ Roadmap
 
-Cada plataforma retiene MIT u otra bajo directorio. Documentación roadmap MIT by Author.
+Status legend: ⬜ pending · 🟨 in progress · ✅ done
+
+### LedgerCore
+- [ ] **L1** — API + double-entry ledger + idempotency + compose stack
+- [ ] **L2** — Rust risk engine (gRPC) + benchmarks
+- [ ] **L3** — Kafka outbox + notifications + LLM fraud scanner
+- [ ] **L4** — React dashboard + SSE + containerized frontend
+- [ ] **L5** — Observability + reports + MCP server + final ADRs
+
+### TickForge
+- [ ] **T1** — Rust WS ingestor → Kafka (reconnect/gap handling)
+- [ ] **T2** — Market engine: L2 books + candles + indicators (+ benches)
+- [ ] **T3** — Event-sourced matching engine + paper trading
+- [ ] **T4** — FastAPI layer + TimescaleDB store
+- [ ] **T5** — Trading desk dashboard + WebSocket fan-out
+- [ ] **T6** — Helm/K8s + latency report + MCP server + final ADRs
+
+Full design rationale: [`docs/superpowers/specs/2026-08-21-portfolio-v2-ledgercore-tickforge-design.md`](./docs/superpowers/specs/2026-08-21-portfolio-v2-ledgercore-tickforge-design.md)
+
+## 🗄️ Archive
+
+The previous 6-project monthly roadmap (May–Oct 2026) lives in [`_archive/`](./_archive/) — kept as reference material.
+
+## 📜 License
+
+MIT.

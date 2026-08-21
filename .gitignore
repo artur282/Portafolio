@@ -43,7 +43,6 @@ odoo.conf
 /md
 /skills-lock.json
 /.agents
-/docs
 # Entorno virtual
 venv/
 ENV/
