@@ -11,35 +11,38 @@ The original portfolio planned 6 monthly megaprojects. This redesign replaces it
 **Goals**
 
 - Demonstrate sustained engineering: architecture design, ADR-driven decisions, performance work, real infrastructure, and maintenance of complex systems.
-- Cover the exact skill matrix extracted from 10 real job offers.
+- Cover the exact skill matrix extracted from the 7 target job offers.
 - Make every project visually demonstrable (frontend) and runnable by anyone with one command.
 
-## 2. Market Analysis (10 Job Offers Reviewed)
+## 2. Market Analysis (7 Target Offers — Final Set)
 
-Offers analyzed: Fusion Consulting (Rust, CH) · Keyrock HFT (Rust, EU) · Linro (Go, EU) · Lansweeper (Go/Rust, ES) · Logicalis (Python, ES) · Revolut Graduate (Python, EU) · FinTech FastAPI (Python, LATAM/US) · Nomic Foundation (Rust, CH) · Hedge Fund Lugano (Rust, CH) · ERNI Schweiz (Rust, CH).
+Offers analyzed: Fusion Consulting (Rust, CH) · Keyrock HFT (Rust, EU) · Lansweeper (Go/Rust, ES) · Logicalis (Python, ES) · FinTech FastAPI (Python, US hours) · Hedge Fund Lugano (Rust, CH) · ERNI Schweiz (Rust, CH).
+
+**Discarded as targets:** Linro (Go-only stack) · Revolut Graduate (graduate-program eligibility mismatch) · Nomic Foundation (EVM-specialization outside portfolio scope).
 
 | Requirement | Offers demanding it |
 |---|---|
-| Rust | Fusion, Keyrock, Lugano Fund, Nomic, ERNI, Lansweeper (6/10) |
-| Python / FastAPI | Keyrock, Logicalis, Revolut, FinTech FastAPI, Lugano Fund (tooling) |
-| Rust + Python combo | Keyrock, Lugano Fund, Fusion ("polyglot") |
-| Distributed systems | Keyrock, Linro, Lansweeper, Logicalis, Revolut |
-| Kafka / event-driven | Linro, Revolut, ERNI |
-| Deep SQL / PostgreSQL | Linro ("think in relational models"), Revolut, FinTech FastAPI, Fusion |
-| Data pipelines / ETL | Fusion, Lansweeper, Logicalis, Revolut, Keyrock |
-| AWS/K8s/Terraform | ERNI, Lansweeper, Linro, Revolut, Keyrock |
-| Low latency / performance | Keyrock, Lugano Fund, Lansweeper |
-| AI integration + agentic engineering (LLMs, MCP) | Keyrock, Linro, Lansweeper |
-| Trading / fintech domain | Keyrock, Lugano Fund, Revolut, FinTech FastAPI |
-| TDD / DDD | ERNI, Revolut, Fusion, Keyrock |
-| GitHub visibility reviewed | Nomic (OSS), Lansweeper ("we will look") |
+| Rust | Fusion, Keyrock, Lugano Fund, Lansweeper, ERNI (5/7) |
+| Python / FastAPI | Keyrock (tooling), Logicalis, FinTech FastAPI, Lugano Fund (research tooling) (4/7) |
+| Rust + Python combo | Keyrock, Lugano Fund, Fusion ("polyglot") (3/7) |
+| Distributed systems | Keyrock, Lugano Fund, Lansweeper, Logicalis, ERNI (5/7) |
+| Kafka / event-driven | ERNI explicit; event-driven patterns implied by trading/data-platform roles (1/7+) |
+| Deep SQL / PostgreSQL | Fusion ("relational data stores"), FinTech FastAPI (2/7) |
+| Data pipelines / ETL | Fusion (Glue), Lansweeper (core), Logicalis (PySpark), Keyrock (market data) (4/7) |
+| AWS / K8s / Docker infra | Keyrock, Lansweeper, Logicalis, ERNI, Fusion (5/7) |
+| Low latency / performance | Keyrock, Lugano Fund, Lansweeper (3/7) |
+| AI integration + agentic engineering (LLMs, MCP) | Keyrock ("LLMs, MCP APIs"), Lansweeper (AI-native, MCP workflows) — 2/7 explicit; Logicalis AI/ML soft, Lugano ML nice-to-have |
+| Trading / fintech domain | Keyrock, Lugano Fund, FinTech FastAPI (3/7) |
+| TDD / DDD / testing culture | ERNI (DDD/TDD/BDD), Fusion, Keyrock, Lansweeper (4/7) |
+| GitHub visibility reviewed | Lansweeper ("active engineering practice — we will look") (1/7) |
 
 **Key insights**
 
 1. The **Rust + Python polyglot combo** is the market sweet spot for this profile.
 2. **Trading/market-data infrastructure maps directly to Swiss hubs** (Zurich/Zug/Lugano; Keyrock + prediction-market fund).
-3. **Agentic engineering (LLM/MCP-assisted development)** appears in 3 offers as an explicit requirement.
-4. Frontend everywhere is secondary: a demonstrable dashboard suffices.
+3. **Agentic engineering (LLM/MCP-assisted development)** appears explicitly in the two most senior offers (Keyrock, Lansweeper).
+4. **Data pipelines** appear in 4/7 offers.
+5. Non-portfolio blockers tracked separately: ERNI requires professional German; FinTech FastAPI requires US business-hours overlap.
 
 ## 3. Decision Log
 
@@ -55,6 +58,7 @@ Offers analyzed: Fusion Consulting (Rust, CH) · Keyrock HFT (Rust, EU) · Linro
 | 8 | Language strategy | Polyglot both, dominant language differs | LedgerCore ≈70% Python / 30% Rust; TickForge ≈65% Rust / 35% Python. Every repo alone shows the full combo |
 | 9 | Runtime contract | **One-command demo**: `docker compose up` boots everything incl. frontend | Hard requirement from user |
 | 10 | Build order | Incremental phases, each ending demoable | Risk reduction |
+| 11 | Target offer set finalized at 7 | Discarded Linro (Go-only), Revolut Graduate (eligibility), Nomic (EVM specialization) | Focus documentation and evidence on achievable targets |
 
 ## 4. Project 1 — LedgerCore 💳 Payments Platform
 
@@ -135,7 +139,7 @@ Rust/Tokio · rdkafka · tonic · TimescaleDB · FastAPI · React + Vite + light
 
 - **One-command demo contract:** `docker compose up` starts every service — Python API, Rust services, PostgreSQL/TimescaleDB, Redis, Kafka, Grafana/Prometheus, and the containerized frontend (Vite build served by nginx). No local toolchain needed beyond Docker. README states it first; CI verifies the stack comes up healthy.
 - **Docs in English:** README, 10+ ADRs per project, C4/Mermaid diagrams, OpenAPI spec, benchmark reports, runbook.
-- **Agentic engineering as a deliverable:** each project ships an **MCP server** exposing domain tools (`get_balance`, `place_paper_order`, …) plus repo-level `AGENTS.md` documenting the AI-assisted workflow used to build it — direct evidence for Keyrock/Lansweeper/Linro-style requirements.
+- **Agentic engineering as a deliverable:** each project ships an **MCP server** exposing domain tools (`get_balance`, `place_paper_order`, …) plus repo-level `AGENTS.md` documenting the AI-assisted workflow used to build it — direct evidence for Keyrock/Lansweeper-style requirements (LLMs, MCP APIs, AI-native workflows).
 - **TDD:** tests first on the hard problems; conventional commits; trunk-based flow with PRs.
 - **CI/CD:** GitHub Actions — clippy/ruff lint → unit tests (cargo test / pytest) → integration tests (Testcontainers) → docker buildx multi-arch distroless → push GHCR → smoke test `docker compose up`.
 - **Observability baseline:** OpenTelemetry traces crossing the Python↔gRPC↔Rust boundary, Prometheus metrics, provisioned Grafana dashboards-as-code.

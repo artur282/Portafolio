@@ -95,7 +95,7 @@ Both projects ship:
 
 ## 📊 Stack vs Market Matrix
 
-Skill matrix validated against 10 real job offers (Switzerland & Europe, Python/Rust backend roles):
+Skill matrix validated against the 7 target job offers (Switzerland & Europe, Python/Rust backend roles):
 
 | Requirement | Covered by |
 |---|---|
