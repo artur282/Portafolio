@@ -20,7 +20,7 @@ This is **not** a project. It is the single source of truth for three projects t
 - the **standards** — the rules that define "done" for every project
 - the **evidence** — 100 real job postings analysed to decide what is worth building
 
-Each project gets its own repository, created when its first task lands. **Nothing here claims to work yet.** There are no screenshots of systems that do not exist, and no links to repositories that have not been created.
+Each project gets its own repository, created when its first task lands. **Nothing here claims to work yet.** There are no screenshots of systems that do not exist, and no links to repositories that have not been created. The plan itself is in [`PLAN.md`](./PLAN.md) and the raw evidence in [`datos/`](./datos/).
 
 ## The three deliverables
 
@@ -43,6 +43,17 @@ I analysed **100 real backend job postings** (LinkedIn, Spain + Switzerland/Germ
 | My GitHub could not prove the claims I was making | **0 of 11** repositories had CI, topics or descriptions, while my profile advertised "CI/CD with GitHub Actions". Kafka, gRPC, Kubernetes and backend Rust appeared nowhere. |
 
 So the plan targets the real gaps: **multi-tenancy, measured performance, CI that actually runs, and Rust that does real work** — instead of another CRUD application.
+
+## The plan and the evidence
+
+The working documents are here, not in a private folder. They are written in Spanish (they are my own working material); the figures they contain are summarised in English above.
+
+| Document | What it contains | Language |
+|---|---|---|
+| [`PLAN.md`](./PLAN.md) | The plan: the two systems, the 12 closed decisions, the eight mandatory standards, the schedule and the global definition of done | ES |
+| [`datos/ofertas_espana_backend.md`](./datos/ofertas_espana_backend.md) | The **100 postings** with their links — the raw evidence for every number above | ES |
+| [`datos/analisis_demanda_python_rust.md`](./datos/analisis_demanda_python_rust.md) | Language distribution, Rust domains, cities and companies that repeat, plus the methodological caveats | ES |
+| [`datos/investigacion-portafolios-2026.md`](./datos/investigacion-portafolios-2026.md) | What actually works in a portfolio, with verifiable sources (HN, dev.to, Medium, GitHub) | ES |
 
 ## How the pieces fit
 
@@ -151,7 +162,7 @@ These rules apply to all three projects. They are the definition of done, not su
 This repository is short enough to read in five minutes. In this order:
 
 1. **The three deliverables** (top) — what each system is and which market it targets.
-2. **The problem** — the 100-posting analysis that decided the scope. Every claim carries a number.
+2. **The problem** — [the 100-posting analysis](./datos/ofertas_espana_backend.md) that decided the scope. Every claim carries a number.
 3. **Key decisions** — six trade-offs, each with the alternative that was rejected and the reason.
 4. **Status and roadmap** — the real epic and task breakdown, including what is *not* built yet.
 5. **Engineering standard** — the eight rules that define "done". This is what the projects get measured against.
@@ -164,7 +175,7 @@ When the project repositories exist, each README opens with a review path of its
 ## Limitations
 
 - **The systems are not built yet.** This repository currently contains the plan, not the outcome. The roadmap and task counts above are the honest state.
-- **The market research is a snapshot** of 100 postings collected in August 2026. It is directional, not statistically rigorous.
+- **The market research is a snapshot** of 100 postings collected in August 2026. It is directional, not statistically rigorous. The [raw list of the 100 postings](./datos/ofertas_espana_backend.md) and the [full analysis](./datos/analisis_demanda_python_rust.md) are in the repository, in Spanish, with their methodological caveats stated.
 - **Agent-assisted implementation.** The code in the three projects is written with AI agents under my direction. The learning documentation exists precisely so I can explain and defend every design decision — a rule I hold to: if I cannot explain it, it does not get committed.
 - **Zero cost constrains the demo.** Free-tier models and local embeddings mean the deployed demos are slower than a paid production setup. This is a deliberate trade-off, documented in each project.
 
