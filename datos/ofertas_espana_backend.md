@@ -1,6 +1,6 @@
 # Ofertas Backend Python/Rust/AI — España + Suiza/Alemania (LinkedIn, ago 2026)
 
-**100 ofertas** (73 España/remoto + 27 Suiza/Alemania) de búsquedas: python/django backend (Madrid, Barcelona), backend rust, AI engineer (Madrid, Barcelona), backend Valencia/Málaga, backend remoto España.
+**100 ofertas** (lotes de 25 + 48 + 27) de búsquedas: python/django backend (Madrid, Barcelona), backend rust, AI engineer (Madrid, Barcelona), backend Valencia/Málaga, backend remoto España.
 
 ## Lote 1 — Python/Rust/AI (25)
 
