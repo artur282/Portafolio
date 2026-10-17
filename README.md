@@ -158,8 +158,7 @@ This repository is short enough to read in five minutes. In this order:
 4. **Status and roadmap** — the real epic and task breakdown, including what is *not* built yet.
 5. **Engineering standard** — the eight rules that define "done". This is what the projects get measured against.
 6. **Limitations** — what this portfolio does not do. Read this one before judging the rest.
-7. **[`_archive/`](./_archive/)** — the superseded LedgerCore/TickForge specifications, kept as reference. Note what was dropped and why.
-8. **[LICENSE](./LICENSE)** — MIT.
+7. **[LICENSE](./LICENSE)** — MIT.
 
 When the project repositories exist, each README opens with a review path of its own: run the demo, read the critical file, run the tests, read the ADRs.
 
@@ -172,10 +171,9 @@ When the project repositories exist, each README opens with a review path of its
 
 ## Archive
 
-Earlier planning has been **superseded** twice, and both rounds are documented rather than deleted:
+Earlier planning was **superseded** twice and is documented rather than silently dropped:
 
-- The **LedgerCore / TickForge** specifications (August 2026) are archived in [`_archive/`](./_archive/) — kept as reference material for architecture patterns only.
-- The **NexusBoard / Cortex** plans (September 2026) were superseded in October 2026 by Caliber and Continuum, after a market-fit review; they were retired before publication and the reasoning lives in the Key decisions section above.
+- The **LedgerCore / TickForge** specifications (August 2026) and the **NexusBoard / Cortex** plans (September 2026) were superseded in October 2026 by Caliber and Continuum, after a market-fit review. They were retired from this repository; the reasoning lives in the Key decisions section above.
 
 ## License
 
