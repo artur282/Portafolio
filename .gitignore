@@ -1,58 +1,20 @@
-# Entornos virtuales
-venv/
-env/
-.venv/
+# Material privado (no se publica)
+datos/
 
-# Archivos de Python
+# Entornos y dependencias
+.venv/
+venv/
+node_modules/
+target/
+dist/
+build/
+.next/
+
+# Basura
 __pycache__/
 *.py[cod]
-*$py.class
-
-# Configuraciones específicas
-.odoorc
-odoo.conf
+.DS_Store
+Thumbs.db
 *.log
-
-# Base de datos y almacenamiento
-.filestore/
-*.dump
-*.backup
-/.vscode/
-/postgresql/
-# Editor/IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Archivos temporales
-*.tmp
-*.bak
-*~
-
-# various virtualenv
-/bin/
-/build/
-/dist/
-/include/
-/lib/
-/man/
-/share/
-/src/
-/modulos_archivados
-/md
-/skills-lock.json
-/.agents
-# Entorno virtual
-venv/
-ENV/
-.env/
-.venv/ 
-=======
-# Archivos de Odoo generados
-/odoo-bin
-/odoo/odoo.log
-/odoo/data/
-/md
-/.cursor
-/.kiro
+.env
+.env.*
